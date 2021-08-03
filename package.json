@@ -1,0 +1,37 @@
+{
+  "name": "fcc_fe_dl_workouts",
+  "version": "1.0.0",
+  "description": "freecodecamp frontend development libraries workouts playground",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "webpack serve",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bappyasif/fcc_fe_dl_workouts.git"
+  },
+  "author": "ab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bappyasif/fcc_fe_dl_workouts/issues"
+  },
+  "homepage": "https://github.com/bappyasif/fcc_fe_dl_workouts#readme",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.9",
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.48.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
