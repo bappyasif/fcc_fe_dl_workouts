@@ -2,12 +2,12 @@ let path = require('path');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src', 'app.js'),
+    entry: path.resolve(__dirname, 'src', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'dist')
     },
     mode: 'development',
-    watch: true,
+    // watch: true,
     module: {
         rules: [
             {
