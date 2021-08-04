@@ -7,7 +7,9 @@ class ContainerForUsingProps extends Component {
         return (
             <div>
                 <PassingProps />
+                <hr />
                 <PassingCallbacks />
+                <hr />
             </div>
         )
     }
