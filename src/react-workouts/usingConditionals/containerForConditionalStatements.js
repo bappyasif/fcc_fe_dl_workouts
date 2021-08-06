@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import ChangingInlineCssConditionally from './changeInlineCssConditionally/index.js'
 import RenderWithTernaryOperaters from './renderingWithTernaryOperators.js'
 import RenderWithIfElse from './renderWithIfElse'
+import WithPropsAndConditionals from './withProps/index.js'
 
 class ContainerForConditionalStatements extends Component {
     render() {
@@ -9,6 +11,11 @@ class ContainerForConditionalStatements extends Component {
                 <RenderWithIfElse />
                 <hr />
                 <RenderWithTernaryOperaters />
+                <hr />
+                <WithPropsAndConditionals />
+                <hr />
+                <ChangingInlineCssConditionally />
+                <hr />
             </div>
         )
     }

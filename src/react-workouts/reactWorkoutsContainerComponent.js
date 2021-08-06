@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ContainerForArrayUsages from './usingArrays/containerForArrayUsages'
 import ContainerForConditionalStatements from './usingConditionals/containerForConditionalStatements'
 import ContainerForLifecycleMethods from './usingLifecycles/containerForLifecycleMethods'
 import ContainerForUsingProps from './usingProps/containerForUsingProps'
@@ -15,6 +16,7 @@ export class ReactWorkoutsContainerComponent extends Component {
                 <ContainerForLifecycleMethods />
                 <ContainerForStylesComponents />
                 <ContainerForConditionalStatements />
+                <ContainerForArrayUsages />
             </div>
         )
     }
