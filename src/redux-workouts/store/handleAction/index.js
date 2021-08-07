@@ -1,4 +1,3 @@
-import React, { Component } from 'react'
 import { createStore } from 'redux'
 
 /** After an action is created and dispatched, the Redux store needs to know how to respond to that action. This is the job of a reducer function. */
@@ -38,6 +37,13 @@ const loginAction = () => {
 
 
 // using switches for multiple store actions
+
+// It's generally a convention to write constants in all uppercase, and this is standard practice in Redux as well.
+
+// Use const for Action Types
+const LOGIN = 'LOGIN';
+const LOGOUT = 'LOGOUT';
+
 const defaultState2 = {
     authenticated: false
 };
@@ -45,10 +51,10 @@ const defaultState2 = {
 const authReducer2 = (state = defaultState2, action) => {
     // Change code below this line
     switch (action.type) {
-        case 'LOGIN':
+        case LOGIN:
             // even though it's not recommended to mutate state directly but as it's a simple demonstration so we're doing it
             return { authenticated: true }
-        case 'LOGOUT':
+        case LOGOUT:
             // even though it's not recommended to mutate state directly but as it's a simple demonstration so we're doing it
             return { authenticated: false }
         default: return state;
@@ -60,13 +66,15 @@ const store2 = Redux.createStore(authReducer2);
 
 const loginUser = () => {
     return {
-        type: 'LOGIN'
+        // type: 'LOGIN'
+        type: LOGIN
     }
 };
 
 const logoutUser = () => {
     return {
-        type: 'LOGOUT'
+        // type: 'LOGOUT'
+        type: LOGOUT
     }
 };
 
