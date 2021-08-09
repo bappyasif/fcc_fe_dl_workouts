@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import ManagingLocally from './managingLocally'
+import SampleWrapper from './SimpleComponent'
+import AppWrapper from './withReactReduxLib'
+import AppWrapper02 from './withReactReduxLib/localStateToRedux'
 
 // first, we'll create a simple React component which allows we to input new text messages.
 
@@ -14,7 +17,14 @@ class ExampleComponent extends Component {
         return (
             <div>
                 <DisplayMessages />
+                <hr />
                 <ManagingLocally />
+                <hr />
+                <AppWrapper />
+                <hr />
+                <AppWrapper02 />
+                <hr/>
+                <SampleWrapper />
             </div>
         )
     }
