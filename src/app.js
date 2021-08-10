@@ -1,7 +1,8 @@
 import React from 'react';
 // import ReactWorkoutsContainerComponent from './react-workouts/reactWorkoutsContainerComponent';
 import "./app.css";
-import ContainerForReactRedux from './reactRedux/containerForReactRedux';
+import RandomQuoteGeneratorContainer from './randomQuoteGeneratorMachine/randomQuoteGeneratorContainer';
+// import ContainerForReactRedux from './reactRedux/containerForReactRedux';
 // import ContainerForReduxWorkouts from './redux-workouts/containerForReduxWorkouts';
 
 export default class App extends React.Component {
@@ -14,7 +15,8 @@ export default class App extends React.Component {
             <div className="container">
                 {/* <ReactWorkoutsContainerComponent /> */}
                 {/* <ContainerForReduxWorkouts /> */}
-                <ContainerForReactRedux />
+                {/* <ContainerForReactRedux /> */}
+                <RandomQuoteGeneratorContainer />
             </div>
         )
     }
