@@ -41,16 +41,25 @@ class QuoteBox extends Component {
     //     return nextState.quote !== this.state.quote
     // }
 
+    
+    findUsefulQuotesObject(res, length) {
+        let whichBlock = this.randomNumberGenerator(length)
+        let randomQuoteObject = res[whichBlock];
+        // console.log(randomQuoteObject, "<>")
+        return randomQuoteObject
+    }
+
     fetchData(url) {
         return fetch(url)
         .then(data=>data.json())
         .then(res=> {
-            let whichBlock = this.randomNumberGenerator(res.length)
-            let randomQuoteObject = res[whichBlock];
+            let randomQuoteObject = this.findUsefulQuotesObject(res, res.length)
             if(randomQuoteObject.author) {
-                return res[whichBlock];
+                return randomQuoteObject;
+            } else {
+                return this.findUsefulQuotesObject(res, res.length)
+                // return randomQuoteObject;
             }
-            else return false
         }).catch(err=>console.log(err))
     }
 

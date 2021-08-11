@@ -10,7 +10,7 @@ let tumblerIntent = 'https://www.tumblr.com/share/caption'
 const SHOW = 'SHOW';
 
 let showQuotes = (quote, author) => {
-    console.log(quote, author, "here!!")
+    // console.log(quote, author, "here!!")
     return {
         type: SHOW,
         quote,
@@ -18,10 +18,12 @@ let showQuotes = (quote, author) => {
     }
 }
 
-let quoteReducer = (state={}, action) => {
+let quoteReducer = (state, action) => {
     switch(action.type) {
         case SHOW:
-            return {...state}
+            // return Object.assign(state, {quote: action.quote, author: action.author})
+            state = [];
+            return state.concat(action.quote, action.author)
     }
 }
 
@@ -44,27 +46,39 @@ class QuoteGenerator extends React.Component {
         //     quote,
         //     author
         // })
-        console.log(author, quote, this.props);
-        this.props.quote = quote;
-        this.props.author = author
+        // console.log(author, quote, this.props);
+        // this.props.quote = quote;
+        // this.props.author = author
         this.props.handleQuotes(quote, author)
-        console.log(author, quote, this.props, 'updated!!');
+        // console.log(author, quote, this.props, 'updated!!');
     }
 
     randomNumberGenerator(length) {
         return Math.floor(Math.random()*length);
     }
 
+    findUsefulQuotesObject(res, length) {
+        let whichBlock = this.randomNumberGenerator(length)
+        let randomQuoteObject = res[whichBlock];
+        // console.log(randomQuoteObject, "<>")
+        return randomQuoteObject
+    }
+
     fetchData(url) {
         return fetch(url)
         .then(data=>data.json())
         .then(res=> {
-            let whichBlock = this.randomNumberGenerator(res.length)
-            let randomQuoteObject = res[whichBlock];
+            // let whichBlock = this.randomNumberGenerator(res.length)
+            // let randomQuoteObject = res[whichBlock];
+            let randomQuoteObject = this.findUsefulQuotesObject(res, res.length);
+            // console.log(randomQuoteObject, "<>")
             if(randomQuoteObject.author) {
-                return res[whichBlock];
+                // return res[whichBlock];
+                return randomQuoteObject
+            } else {
+                return this.findUsefulQuotesObject(res, res.length);
             }
-            else return false
+            // else return false
         }).catch(err=>console.log(err))
     }
 
@@ -112,18 +126,18 @@ class QuoteGenerator extends React.Component {
 }
 
 let mapStateToProps = state => {
-    console.log(state, "??")
+    // console.log(state, "??")
     return {
         // state
-        author: state,
-        quote: state
+        author: state ? state[1] : false,
+        quote: state ? state[0] : false
     }
 }
 
 let mapDispatchToProps = dispatch => {
     return {
         handleQuotes: (quote, author) => {
-            console.log(quote, author);
+            // console.log(quote, author);
             dispatch(showQuotes(quote, author))
         }
     }

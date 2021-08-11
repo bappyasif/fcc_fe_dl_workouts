@@ -3,17 +3,20 @@
 }
 body {
     background-color: var(--randomColor);
+    /* opacity: .8; */
 }
 #quote-box {
     border: 4px dashed var(--randomColor);
-    width: 47vw;
+    max-width: 47vw;
     margin: auto;
     margin-top: 18%;
-    background: seashell;
+    background: whitesmoke;
+    
 }
 #top-layer {
     display: flex;
     flex-direction: column;
+    /* opacity: 1; */
 }
 
 #author-div {
@@ -25,7 +28,7 @@ body {
 
 #text, #author {
     color: var(--randomColor);
-    font-size: x-large;
+    font-size: xx-large;
     margin-left: 2vw;
     margin-right: 2vw;
     font-weight: bolder;
