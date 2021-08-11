@@ -1,0 +1,35 @@
+body {
+    color: springgreen;
+    background-color: midnightblue;
+}
+
+#editor, #editor02 {
+    background-color: steelblue;
+    color: maroon;
+    outline: none;
+    border: mediumpurple solid 4px;
+}
+
+#editor02 {
+    margin-top: 11%;
+}
+
+#preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: springgreen solid 4px;
+    max-width: 65vw;
+    margin: auto;
+    background-color: gray;
+    margin-top: 8%;
+}
+
+ul, ol {
+    list-style-position: inside;
+}
+
+#preview img {
+    width: 76%;
+}
