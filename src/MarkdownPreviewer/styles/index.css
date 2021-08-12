@@ -14,7 +14,7 @@ body {
     margin-top: 11%;
 }
 
-#preview {
+#preview, #preview02 {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,6 +30,25 @@ ul, ol {
     list-style-position: inside;
 }
 
-#preview img {
+#preview img, #preview02 img {
     width: 76%;
+}
+
+table, tr, th, td {
+    border: solid 2px silver;
+    padding: 2px;
+}
+
+blockquote {
+    background-color: whitesmoke;
+}
+
+blockquote p {
+    display: flex;
+}
+
+.sample-line {
+    width: .8em;
+    height: 2em;
+    fill: violet;
 }

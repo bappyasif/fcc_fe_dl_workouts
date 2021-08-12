@@ -72,6 +72,23 @@ class MarkdownPreviewerUsingReact extends Component {
         return div.innerHTML;
     }
 
+    assignClasses(html) {
+        html.querySelectorAll('code').forEach(node=>node.classList.add('language-js'))
+        console.log(html);
+    }
+
+    componentDidMount() {
+        document.querySelector('#preview').querySelectorAll('code').forEach(node=>node.classList.add('language-js'));
+        let div =  document.createElement('div');
+        div.textContent = '"'
+        let div2 =  document.createElement('div');
+        div2.textContent = '"'
+        document.querySelector('#preview').querySelectorAll('blockquote p').forEach(node=> {           
+            node.append(div2);
+            node.prepend(div);
+        })
+    }
+
     render() {
         // let renderer = new marked.Renderer();
         let markedDown = marked(this.state.textareaContent, { breaks: true, gfm: true });
@@ -84,6 +101,9 @@ class MarkdownPreviewerUsingReact extends Component {
 
         // using domPurifier
         let sanitizer = DOMPurify.sanitize;
+
+        // assigning classes
+        // this.assignClasses(markedDown)
 
         return (
             <div>

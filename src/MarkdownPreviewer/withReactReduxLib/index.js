@@ -93,13 +93,23 @@ class MarkdownPreviewerUsingReactReduxLibrary extends React.Component {
     }
 
     componentDidMount() {
-        // initialText = marked(initialContentForTextarea, { breaks: true, gfm: true })
+        initialText = marked(initialContentForTextarea, { breaks: true, gfm: true })
         // this.props.handlePreview(initialText)
-        this.props.handlePreview(initialContentForTextarea)
+        this.props.handlePreview(initialContentForTextarea);
+        console.log(document.querySelector('#preview02').querySelector('h2'))
+        document.querySelectorAll('code').forEach(node=>node.classList.add('language-js'));
+        let div =  document.createElement('div');
+        div.textContent = '"'
+        let div2 =  document.createElement('div');
+        div2.textContent = '"'
+        document.querySelector('#preview02').querySelectorAll('blockquote p').forEach(node=> {           
+            node.append(div2);
+            node.prepend(div);
+        })
     }
 
     render() {
-        console.log(this.props)
+        // console.log(this.props)
         // let renderer = new marked.Renderer();
         markedDown = marked(this.props.markdownText[0] ? this.props.markdownText[0] : '', { breaks: true, gfm: true });
 
@@ -130,7 +140,7 @@ class MarkdownPreviewerUsingReactReduxLibrary extends React.Component {
                         __html: sanitizer(markedDown)
                         // __html: html
                     }}
-                    id="preview"
+                    id="preview02"
                 />
             </div>
         )
@@ -138,7 +148,7 @@ class MarkdownPreviewerUsingReactReduxLibrary extends React.Component {
 }
 
 let mapStateToProps = state => {
-    console.log(state, "??")
+    // console.log(state, "??")
     return {
         markdownText: state
     }
@@ -157,7 +167,7 @@ class WrapperContainer extends React.Component {
         return(
             <Provider store={store}>
                 <ConnectedContent />
-                <pre><code class="language-css" style={{ color: 'red' }}>p</code></pre>
+                {/* <pre><code className="language-code" style={{ color: 'red' }}>p</code></pre> */}
             </Provider>
         )
     }
