@@ -1,7 +1,8 @@
 import React from 'react';
 // import ReactWorkoutsContainerComponent from './react-workouts/reactWorkoutsContainerComponent';
 import "./app.css";
-import ContainerForMarkdownPreviewer from './MarkdownPreviewer/ContainerForMarkdownPreviewer';
+import ContainerForDrumMachine from './DrumMachine/ContainerForDrumMachine';
+// import ContainerForMarkdownPreviewer from './MarkdownPreviewer/ContainerForMarkdownPreviewer';
 // import RandomQuoteGeneratorContainer from './randomQuoteGeneratorMachine/randomQuoteGeneratorContainer';
 // import ContainerForReactRedux from './reactRedux/containerForReactRedux';
 // import ContainerForReduxWorkouts from './redux-workouts/containerForReduxWorkouts';
@@ -18,7 +19,8 @@ export default class App extends React.Component {
                 {/* <ContainerForReduxWorkouts /> */}
                 {/* <ContainerForReactRedux /> */}
                 {/* <RandomQuoteGeneratorContainer /> */}
-                <ContainerForMarkdownPreviewer />
+                {/* <ContainerForMarkdownPreviewer /> */}
+                <ContainerForDrumMachine />
             </div>
         )
     }
