@@ -17,33 +17,42 @@ class DrumMachineUsingReact extends Component {
             play: ''
         }
 
-        this.playSoundsOnClick = this.playSoundsOnClick.bind(this);
+        this.playSounds = this.playSounds.bind(this);
     }
 
-    playSoundsOnClick(evt) {
+    playSounds(evt) {
+        console.log(evt.target, 'pressed')
+        // document.addEventListener('keydown', function (event) {
+        //     console.log(`Key: ${event.key} with keycode ${event.keyCode} has been pressed`)
+        // })
+        // this.setState({ play: <audio src={this.state.q} onFocus autoPlay /> })
+        // console.log(key);
+        // if (key == 'q') {
+        //     <audio src={this.state.q} autoPlay />
+        // }
+    }
+
+    componentDidMount() {
+        // document.body.querySelectorAll('.pad-key').forEach(node=>{
+        //     console.log(node);
+        //     node.addEventListener('keypress', ()=> {
+        //         console.log('pressed!!')
+        //     })
+        // })
+
+        // document.body.addEventListener('keypress', ()=> {
+        //     console.log('pressed!!')
+        // })
+
+        // document.body.querySelector('#display').addEventListener('keypress', ()=> {
+        //     console.log('pressed!!')
+        // })
         
-        console.log(evt.target, 'clicked')
-    }
-
-    componentDidMount() {   
-        let that = this.state;     
         // document.body.querySelector('#display').addEventListener('keypress', testPressed)
-        document.body.addEventListener('keypress', keyPressed)
-        let list = "q,w,e,a,s,d,z,x,c,Q,W,E,A,S,D,Z,X,C";
-        function keyPressed(evt) {
-            if(list.split(',').includes(evt.key)) {
-                console.log(evt.key,'pressed!!')
-                let audio = document.createElement('audio');               
-                audio.src = that[evt.key]
-                audio.autoplay = true;
-            } else {
-                console.log(evt.key,'ignore!!')
-            }
+        document.body.addEventListener('keypress', testPressed)
+        function testPressed(evt) {
+            console.log(evt)
         }
-    }
-
-    playing() {
-         console.log('playing!!')
     }
 
     render() {
@@ -53,8 +62,8 @@ class DrumMachineUsingReact extends Component {
                     {/* <Quiz /> */}
                     <div id='Q' className='drum-pad'>
                         {/* <div tabIndex='0' className='pad-key' onKeyDownCapture={(evt) => this.playSounds(evt,'q')} onKeyUp={(evt) => this.playSounds(evt,'q')} onClick={(evt) => this.playSounds(evt,'q')} onKeyDown={(evt) => this.playSounds(evt,'q')} onKeyPress={(evt) => this.playSounds(evt,'q')}>q</div> */}
-                        <div tabIndex='0' className='pad-key' onClick={this.playSoundsOnClick}>q</div>
-                        {/* <audio src={this.state.q} onPlay={this.playing} onCanPlay={this.playing} autoPlay/> */}
+                        <div tabIndex='0' className='pad-key'>q</div>
+                        {/* <audio src={this.state.q} autoPlay/> */}
                     </div>
                     <div id='W' className='drum-pad'>
                         <div className='pad-key'>w</div>
@@ -88,10 +97,39 @@ class DrumMachineUsingReact extends Component {
                         <div className='pad-key'>c</div>
                         <audio src='' controls />
                     </div>
+                    {/* <figure>
+                        <figcaption>Listen to the T-Rex:</figcaption>
+                        <audio
+                        autoPlay
+                            controls
+                            src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3">
+                            
+                        </audio>
+                    </figure> */}
                 </div>
             </div>
         )
     }
+}
+
+function Quiz() {
+    function handleAnswerChange(event) {
+        if (event.key === 'y') {
+            alert('The sky is your starting point!')
+        }
+        else if (event.key === 'n') {
+            alert('The sky is your limit👀')
+        }
+    }
+
+    return (
+        <div>
+            <p> Are You Smart?</p>
+            {/* <input type="text" value='y' onKeyPress={handleAnswerChange} /> */}
+            <div onKeyDown>q</div>
+            <small> Press Y for Yes or N for No</small>
+        </div>
+    )
 }
 
 export default DrumMachineUsingReact
