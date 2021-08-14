@@ -1,135 +1,201 @@
 import React, { Component } from 'react'
+// import { drumSounds, list } from '../ContainerForDrumMachine';
+import '../styling/index.css';
+
+export let drumSounds = {
+    q: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3',
+        name: 'Heater-01'
+    },
+    w: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3',
+        name: 'Heater-02'
+    },
+    e: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3',
+        name: 'Heater-03'
+    },
+    a: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3',
+        name: 'Heater-04'
+    },
+    s: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3',
+        name: 'Heater-06'
+    },
+    d: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3',
+        name: 'Dsc_oh'
+    },
+    z: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3',
+        name: 'Kick_n_Hat'
+    },
+    x: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3',
+        name: 'RP4_Kick_01'
+    },
+    c: {
+        sound: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3',
+        name: 'Cev_H2'
+    },
+}
+
+export let list = "q,w,e,a,s,d,z,x,c,Q,W,E,A,S,D,Z,X,C";
 
 class DrumMachineUsingReact extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            q: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3',
-            w: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3',
-            e: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3',
-            a: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3',
-            s: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3',
-            d: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3',
-            z: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3',
-            x: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3',
-            c: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3',
+        this.state = {   
             play: ''
         }
 
-        this.playSounds = this.playSounds.bind(this);
+        console.log(this.props)
+
+        // console.log(this.props, drumSounds, list)
+
+        this.playSoundsOnClick = this.playSoundsOnClick.bind(this);
     }
 
-    playSounds(evt) {
-        console.log(evt.target, 'pressed')
-        // document.addEventListener('keydown', function (event) {
-        //     console.log(`Key: ${event.key} with keycode ${event.keyCode} has been pressed`)
+    playSoundsOnClick(evt) {
+
+        // console.log(evt.target, 'clicked');
+        // console.log(document.body.querySelector(`#${evt.target.id}`), "<>")
+        // console.log(document.body.querySelector(`#${evt.target.id}`).querySelector('audio').play(), "<>")
+        // this.setState({
+        //     play: evt.target.id
+        //     // play: evt.target
         // })
-        // this.setState({ play: <audio src={this.state.q} onFocus autoPlay /> })
-        // console.log(key);
-        // if (key == 'q') {
-        //     <audio src={this.state.q} autoPlay />
-        // }
+        
+        let elem = evt.target;
+        // console.log(drumSounds[elem.id.toLowerCase() || elem.parentNode.parentNode.id.toLowerCase()])
+        this.setState({
+            play: drumSounds[elem.id.toLowerCase() || elem.parentNode.parentNode.id.toLowerCase()].name
+        })
+        let audioElem = document.body.querySelector(`#${elem.id || elem.parentNode.parentNode.id}`).querySelector('audio')
+        audioElem.play();
+
+
+        
+        // console.log(this.state.play)
     }
 
     componentDidMount() {
-        // document.body.querySelectorAll('.pad-key').forEach(node=>{
-        //     console.log(node);
-        //     node.addEventListener('keypress', ()=> {
-        //         console.log('pressed!!')
-        //     })
-        // })
-
-        // document.body.addEventListener('keypress', ()=> {
-        //     console.log('pressed!!')
-        // })
-
-        // document.body.querySelector('#display').addEventListener('keypress', ()=> {
-        //     console.log('pressed!!')
-        // })
-        
+        let that = this.state;
         // document.body.querySelector('#display').addEventListener('keypress', testPressed)
-        document.body.addEventListener('keypress', testPressed)
-        function testPressed(evt) {
-            console.log(evt)
+        document.body.addEventListener('keypress', keyPressed)
+        // let list = "q,w,e,a,s,d,z,x,c,Q,W,E,A,S,D,Z,X,C";
+        function keyPressed(evt) {
+            playSound(evt.key);
+        }
+
+        // document.body.querySelector('#display').addEventListener('click', testClicked);
+        // function testClicked(evt) {
+        //     // console.log(evt.target.id, that.play)
+        //     if(evt.target.id !== 'display') {
+        //         console.log(evt.target.id, 'here!!');
+        //         console.log(document.querySelector(`#${evt.target.id}`))
+        //     }
+        // }
+
+        function playSound(key) {
+            if (list.split(',').includes(key)) {
+                // console.log(key, 'pressed!!')
+                that.play = key;
+                let audio = document.createElement('audio');
+                // audio.src = that[evt.key]
+                audio.src = drumSounds[key].sound
+                audio.autoplay = true;
+            } else {
+                console.log(key, 'ignore!!')
+            }
         }
     }
 
+    componentWillUnmount() {
+        document.body.removeEventListener('keypress', keyPressed)
+    }
+
+    playing() {
+        console.log('playing!!')
+    }
+
     render() {
+        // let check = this.state.play == 'Q' ? autoPlay : false;
+        // console.log(this.props)
         return (
             <div id='drum-machine' className='drum-machine-container'>
                 <div id='display'>
                     {/* <Quiz /> */}
-                    <div id='Q' className='drum-pad'>
-                        {/* <div tabIndex='0' className='pad-key' onKeyDownCapture={(evt) => this.playSounds(evt,'q')} onKeyUp={(evt) => this.playSounds(evt,'q')} onClick={(evt) => this.playSounds(evt,'q')} onKeyDown={(evt) => this.playSounds(evt,'q')} onKeyPress={(evt) => this.playSounds(evt,'q')}>q</div> */}
-                        <div tabIndex='0' className='pad-key'>q</div>
-                        {/* <audio src={this.state.q} autoPlay/> */}
+                    <div id='Q' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        {/* <audio src={drumSounds.q.sound} autoPlay onFocus /> */}
+                        <div tabIndex='0' className='pad-key'>
+                            <div className='key-text'>q</div>
+                            <audio src={drumSounds.q.sound} />
+                        </div>
                     </div>
-                    <div id='W' className='drum-pad'>
-                        <div className='pad-key'>w</div>
-                        <audio src='' controls />
+                    <div id='W' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>w</div>
+                            <audio src={drumSounds.w.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='e' className='drum-pad'>
-                        <div className='pad-key'>e</div>
-                        <audio src='' controls />
+                    <div id='E' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>e</div>
+                            <audio src={drumSounds.e.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='A' className='drum-pad'>
-                        <div className='pad-key'>a</div>
-                        <audio src='' controls />
+                    <div id='A' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>a</div>
+                            <audio src={drumSounds.a.sound} autoPlay />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='S' className='drum-pad'>
-                        <div className='pad-key'>s</div>
-                        <audio src='' controls />
+                    <div id='S' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>s</div>
+                            <audio src={drumSounds.s.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='D' className='drum-pad'>
-                        <div className='pad-key'>d</div>
-                        <audio src='' controls />
+                    <div id='D' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>d</div>
+                            <audio src={drumSounds.d.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='Z' className='drum-pad'>
-                        <div className='pad-key'>z</div>
-                        <audio src='' controls />
+                    <div id='Z' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>z</div>
+                            <audio src={drumSounds.z.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='X' className='drum-pad'>
-                        <div className='pad-key'>x</div>
-                        <audio src='' controls />
+                    <div id='X' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>x</div>
+                            <audio src={drumSounds.x.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    <div id='C' className='drum-pad'>
-                        <div className='pad-key'>c</div>
-                        <audio src='' controls />
+                    <div id='C' className='drum-pad' onClick={this.playSoundsOnClick}>
+                        <div className='pad-key'>
+                            <div className='key-text'>c</div>
+                            <audio src={drumSounds.c.sound} />
+                        </div>
+                        {/* <audio src='' autoPlay /> */}
                     </div>
-                    {/* <figure>
-                        <figcaption>Listen to the T-Rex:</figcaption>
-                        <audio
-                        autoPlay
-                            controls
-                            src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3">
-                            
-                        </audio>
-                    </figure> */}
                 </div>
+                <div id='which-sound'>{this.state.play ? this.state.play : ''}</div>
             </div>
         )
     }
-}
-
-function Quiz() {
-    function handleAnswerChange(event) {
-        if (event.key === 'y') {
-            alert('The sky is your starting point!')
-        }
-        else if (event.key === 'n') {
-            alert('The sky is your limit👀')
-        }
-    }
-
-    return (
-        <div>
-            <p> Are You Smart?</p>
-            {/* <input type="text" value='y' onKeyPress={handleAnswerChange} /> */}
-            <div onKeyDown>q</div>
-            <small> Press Y for Yes or N for No</small>
-        </div>
-    )
 }
 
 export default DrumMachineUsingReact
