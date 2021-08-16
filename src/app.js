@@ -1,7 +1,7 @@
 import React from 'react';
 // import ReactWorkoutsContainerComponent from './react-workouts/reactWorkoutsContainerComponent';
 import "./app.css";
-import ContainerForDrumMachine from './DrumMachine/ContainerForDrumMachine';
+// import ContainerForDrumMachine from './DrumMachine/ContainerForDrumMachine';
 // import ContainerForMarkdownPreviewer from './MarkdownPreviewer/ContainerForMarkdownPreviewer';
 // import RandomQuoteGeneratorContainer from './randomQuoteGeneratorMachine/randomQuoteGeneratorContainer';
 // import ContainerForReactRedux from './reactRedux/containerForReactRedux';
@@ -20,7 +20,7 @@ export default class App extends React.Component {
                 {/* <ContainerForReactRedux /> */}
                 {/* <RandomQuoteGeneratorContainer /> */}
                 {/* <ContainerForMarkdownPreviewer /> */}
-                <ContainerForDrumMachine />
+                {/* <ContainerForDrumMachine /> */}
             </div>
         )
     }
