@@ -19,6 +19,7 @@ body {
     height: 8vh;
     margin: 2px;
     border: gray solid .2em;
+    background-color: dimgrey;
 }
 
 .pad-key {
@@ -43,7 +44,7 @@ body {
     height: 2em;
     border: mediumorchid solid .6em;
     margin: 2em;
-    margin-right: 3.8em;
+    /* margin-right: 3.8em; */
     font-size: larger;
     font-weight: bolder;
 }
@@ -51,4 +52,29 @@ body {
 .key-text {
     font-size: larger;
     font-weight: bolder;
+}
+
+#outputs {
+    background-color: dimgrey;
+    margin-right: 2.9%;
+}
+
+#outputs input {
+    /* padding-left: .8vw; */
+    width: 8vw;
+    margin-left: 0;
+    margin-right: 15%;
+}
+
+#volume-level {
+    display: flex;
+    justify-content: space-evenly;   
+}
+
+#volume-level span {
+    margin-left: 11%;
+    padding: 2.4%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bolder;
+    font-size: larger;
 }

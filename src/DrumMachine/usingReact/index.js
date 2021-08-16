@@ -6,11 +6,13 @@ class DrumMachineUsingReact extends Component {
         super(props)
 
         this.state = {
-            play: ''
+            play: '',
+            volume: .2
         }
 
         this.playSoundsOnClick = this.playSoundsOnClick.bind(this);
         this.playSoundsOnPress = this.playSoundsOnPress.bind(this);
+        this.handleVolumeLevelChange = this.handleVolumeLevelChange.bind(this);
     }
 
     playSoundsOnClick(evt) {
@@ -24,6 +26,8 @@ class DrumMachineUsingReact extends Component {
         })
 
         let audioElem = document.querySelector(`#${elem.id || elem.parentNode.id}`).querySelector('audio')
+        audioElem.volume = this.state.volume;
+
         audioElem.play();
     }
 
@@ -31,15 +35,24 @@ class DrumMachineUsingReact extends Component {
         let keypadTokens = this.props.list.split(',');
         let key = evt.key.toLowerCase();
         let idx = keypadTokens.indexOf(key);
-        console.log(key, idx)
+        // console.log(key, idx)
         if (keypadTokens.includes(key)) {
             this.setState({ play: this.props.drumSounds[idx].name });
             let audio = document.createElement('audio');
             audio.src = this.props.drumSounds[idx].sound
+
+            audio.volume = this.state.volume;
             audio.play();
         } else {
             console.log(key, 'ignore!!')
         }
+    }
+
+    handleVolumeLevelChange(evt) {
+        let volumeLevel = document.querySelector('#volume-slider');
+        volumeLevel.innerHTML = volumeLevel.value;
+        this.setState({ volume: volumeLevel.value })
+        // console.log(volumeLevel.value)
     }
 
     componentDidMount() {
@@ -55,9 +68,15 @@ class DrumMachineUsingReact extends Component {
         return (
             <div id='drum-machine' className='drum-machine-container'>
                 <div id='display'>
-                    <DrumPads handleClick={this.playSoundsOnClick} drumSounds={this.props.drumSounds} />
+                    <DrumPads handleClick={this.playSoundsOnClick} drumSounds={this.props.drumSounds} volumeLevel={this.handleVolumeLevelChange} />
                 </div>
-                <div id='which-sound'>{this.state.play ? this.state.play : ''}</div>
+                <div id='outputs'>
+                    <div id='volume-level'>
+                        <span>Volume: </span>
+                        <input id='volume-slider' type="range" min={.0} max={1} value={this.state.volume} onChange={this.handleVolumeLevelChange} step={.2} />
+                    </div>
+                    <div id='which-sound'>{this.state.play ? this.state.play : ''}</div>
+                </div>
             </div>
         )
     }
