@@ -13,6 +13,7 @@ class DrumMachineUsingReact extends Component {
         this.playSoundsOnClick = this.playSoundsOnClick.bind(this);
         this.playSoundsOnPress = this.playSoundsOnPress.bind(this);
         this.handleVolumeLevelChange = this.handleVolumeLevelChange.bind(this);
+        this.onKeyPressed = this.onKeyPressed.bind(this)
     }
 
     playSoundsOnClick(evt) {
@@ -34,12 +35,16 @@ class DrumMachineUsingReact extends Component {
     playSoundsOnPress(evt) {
         let keypadTokens = this.props.list.split(',');
         let key = evt.key.toLowerCase();
+        // console.log(evt.target.querySelector(`#${key}`).id);
+        let keyId = evt.target.querySelector(`#${key}`).id;
         let idx = keypadTokens.indexOf(key);
-        // console.log(key, idx)
-        if (keypadTokens.includes(key)) {
+        let keyPressed = evt.target.querySelector(`#${keyId}`);
+        // console.log(key, idx, evt.target.querySelector(`#${key}`))
+        if (keyPressed) {
             this.setState({ play: this.props.drumSounds[idx].name });
-            let audio = document.createElement('audio');
-            audio.src = this.props.drumSounds[idx].sound
+            // let audio = document.createElement('audio');
+            // audio.src = this.props.drumSounds[idx].sound
+            let audio = keyPressed.querySelector('audio');
 
             audio.volume = this.state.volume;
             audio.play();
@@ -57,6 +62,10 @@ class DrumMachineUsingReact extends Component {
 
     componentDidMount() {
         window.addEventListener('keypress', this.playSoundsOnPress);
+        // console.log(document.querySelector('#display').querySelector('audio'))
+        // document.querySelector('#display').addEventListener('onKeyDown', this.playSoundsOnPress)
+        // window.addEventListener('keydown', this.playSoundsOnPress)
+        // document.querySelector('#display').addEventListener('keypress', this.playSoundsOnPress)
     }
 
     componentWillUnmount() {
@@ -64,8 +73,13 @@ class DrumMachineUsingReact extends Component {
         window.removeEventListener('keypress', this.playSoundsOnPress);
     }
 
+    onKeyPressed(e) {
+        console.log(e.key);
+    }
+
     render() {
         return (
+            
             <div id='drum-machine' className='drum-machine-container'>
                 <div id='display'>
                     <DrumPads handleClick={this.playSoundsOnClick} drumSounds={this.props.drumSounds} volumeLevel={this.handleVolumeLevelChange} />
@@ -77,6 +91,7 @@ class DrumMachineUsingReact extends Component {
                     </div>
                     <div id='which-sound'>{this.state.play ? this.state.play : ''}</div>
                 </div>
+                
             </div>
         )
     }
