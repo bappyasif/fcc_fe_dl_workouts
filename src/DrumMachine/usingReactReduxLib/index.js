@@ -1,12 +1,37 @@
-import React, { Component } from 'react'
-import '../styling/index.css';
+import React from "react";
+import { Provider } from "react-redux";
+import { connect } from "react-redux";
+import { createStore } from "redux";
+import { drumSounds, list } from "../ContainerForDrumMachine";
 
-class DrumMachineUsingReact extends Component {
+const PLAY = 'PLAY';
+
+let handlePLaying = instrument => {
+    return {
+        type: PLAY,
+        instrument
+    }
+}
+
+let playReducer = (state, action) => {
+    switch(action.type) {
+        case PLAY:
+            state=[];
+            // console.log(action, "??")
+            return[...state, action.instrument]
+        default:
+            return state
+    }
+}
+
+let store = createStore(playReducer);
+
+class DrumMachine extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            play: '',
+            // play: '',
             volume: .2
         }
 
@@ -19,12 +44,14 @@ class DrumMachineUsingReact extends Component {
     playSoundsOnClick(evt) {
         let elem = evt.target;
 
-        let keypadTokens = this.props.list.split(',');
+        let keypadTokens = list.split(',');
         let idx = keypadTokens.indexOf(elem.id || elem.parentNode.id);
 
-        this.setState({
-            play: this.props.drumSounds[idx].name
-        })
+        // this.setState({
+        //     play: this.props.drumSounds[idx].name
+        // })
+        // console.log(this.props)
+        this.props.handleInstruments(drumSounds[idx].name);
 
         let audioElem = document.querySelector(`#${elem.id || elem.parentNode.id}`).querySelector('audio')
         audioElem.volume = this.state.volume;
@@ -33,18 +60,18 @@ class DrumMachineUsingReact extends Component {
     }
 
     playSoundsOnPress(evt) {
-        let keypadTokens = this.props.list.split(',');
+        let keypadTokens = list.split(',');
         let key = evt.key.toLowerCase();
-        // console.log(evt.target.querySelector(`#${key}`).id);
+
         let keyId = evt.target.querySelector(`#${key}`).id;
         let idx = keypadTokens.indexOf(key);
-        // let keyPressed = evt.target.querySelector(`#${keyId}`);
+        
         let keyPressed = document.querySelector(`#${keyId}`);
-        // console.log(key, idx, evt.target.querySelector(`#${key}`))
+        
         if (keyPressed) {
-            this.setState({ play: this.props.drumSounds[idx].name });
-            // let audio = document.createElement('audio');
-            // audio.src = this.props.drumSounds[idx].sound
+            // this.setState({ play: this.props.drumSounds[idx].name });
+            this.props.handleInstruments(drumSounds[idx].name);
+            
             let audio = keyPressed.querySelector('audio');
 
             audio.volume = this.state.volume;
@@ -55,22 +82,17 @@ class DrumMachineUsingReact extends Component {
     }
 
     handleVolumeLevelChange(evt) {
-        let volumeLevel = document.querySelector('#volume-slider');
+        // let volumeLevel = document.querySelector('#volume-slider');
+        let volumeLevel = evt.target;
         volumeLevel.innerHTML = volumeLevel.value;
         this.setState({ volume: volumeLevel.value })
-        // console.log(volumeLevel.value)
     }
 
     componentDidMount() {
         window.addEventListener('keypress', this.playSoundsOnPress);
-        // console.log(document.querySelector('#display').querySelector('audio'))
-        // document.querySelector('#display').addEventListener('onKeyDown', this.playSoundsOnPress)
-        // window.addEventListener('keydown', this.playSoundsOnPress)
-        // document.querySelector('#display').addEventListener('keypress', this.playSoundsOnPress)
     }
 
     componentWillUnmount() {
-        // document.body.removeEventListener('keypress', keyPressed)
         window.removeEventListener('keypress', this.playSoundsOnPress);
     }
 
@@ -83,14 +105,15 @@ class DrumMachineUsingReact extends Component {
             
             <div id='drum-machine' className='drum-machine-container'>
                 <div id='display'>
-                    <DrumPads handleClick={this.playSoundsOnClick} drumSounds={this.props.drumSounds} volumeLevel={this.handleVolumeLevelChange} />
+                    <DrumPads handleClick={this.playSoundsOnClick} drumSounds={this.props.drumSounds} />
                 </div>
                 <div id='outputs'>
                     <div id='volume-level'>
                         <span>Volume: </span>
                         <input id='volume-slider' type="range" min={.0} max={1} value={this.state.volume} onChange={this.handleVolumeLevelChange} step={.2} />
                     </div>
-                    <div id='which-sound'>{this.state.play ? this.state.play : ''}</div>
+                    {/* <div id='which-sound'>{this.state.play ? this.state.play : ''}</div> */}
+                    <div id='which-sound'>{this.props.instrument ? this.props.instrument : ''}</div>
                 </div>
                 
             </div>
@@ -104,16 +127,41 @@ class DrumPads extends React.Component {
     }
 
     render() {
-        return this.props.drumSounds.map((drum, idx) => {
+        return drumSounds.map((drum, idx) => {
             return (
                 <div key={drum.keypad} id={drum.keypad} className='drum-pad' onClick={this.props.handleClick} >
                     <div className='key-text'>{drum.keypad.toUpperCase()}</div>
-                    <audio id={drum.keypad} className="clip" src={this.props.drumSounds[idx].sound} />
+                    <audio id={drum.keypad} className="clip" src={drumSounds[idx].sound} />
                 </div>
             )
         })
     }
 }
 
-export default DrumMachineUsingReact
+let mapStateToProps = state => {
+    // console.log(state, "<>")
+    return {
+        instrument: state
+        // instrument: state[0]
+    }
+}
 
+let mapDispatchToProps = dispatch => {
+    return {
+        handleInstruments: (instrument) => dispatch(handlePLaying(instrument))
+    }
+}
+
+let ContainerComponent = connect(mapStateToProps, mapDispatchToProps) (DrumMachine)
+
+class DrumMachineUsingRedux extends React.Component {
+    render() {
+        return(
+            <Provider store={store}>
+                <ContainerComponent />
+            </Provider>
+        )
+    }
+}
+
+export default DrumMachineUsingRedux;

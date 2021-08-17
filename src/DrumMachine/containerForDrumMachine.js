@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import DrumMachineUsingReact from './usingReact'
+import DrumMachineUsingRedux from './usingReactReduxLib';
 
 // export let drumSounds = {
 //     q: {
@@ -89,7 +90,7 @@ export let drumSounds = [
 ]
 
 // export let list = "q,w,e,a,s,d,z,x,c,Q,W,E,A,S,D,Z,X,C";
-let list = "q,w,e,a,s,d,z,x,c";
+export let list = "q,w,e,a,s,d,z,x,c";
 
 class ContainerForDrumMachine extends Component {
     constructor(props) {
@@ -101,6 +102,7 @@ class ContainerForDrumMachine extends Component {
             <div className='drum-machine-outer-container'>
                 <h4>Drum Machine</h4>
                 <DrumMachineUsingReact drumSounds={drumSounds} list={list} />
+                <DrumMachineUsingRedux />
             </div>
         )
     }
