@@ -1,38 +1,62 @@
 import React from 'react'
+import { additionalsData, numbersData, operatorsData } from '../ContainerForCalculatorComponents'
 
 function PresentationalLogic(props) {
+    let allNumbers = numbersData.map(num => {
+        return <input
+            key={num.id}
+            type='button'
+            className='numbers'
+            id={num.id}
+            value={num.value}
+            onClick={props.digits} />
+    })
+    let allOperators = operatorsData.map(operator => {
+        return <button
+            key={operator.id}
+            className='operators'
+            onClick={props.handleDisplayChange}
+            value={operator.value}
+            id={operator.id}>{operator.value}</button>
+    })
+    let allAdditionals = additionalsData.map(additional => {
+        return <button
+            value={additional.value}
+            key={additional.value}
+            className='extras'
+            id={additional.id}
+            onClick={
+                additional.value == 'Clr'
+                    ? props.clear
+                    : (additional.id == 'zero' || additional.id == 'decimal')
+                        ? props.digits
+                        : additional.id == 'equals'
+                        ? props.equals
+                        : null
+            }>{additional.value}</button>
+    })
+    // console.log(props)
     return (
         <div className='calculator-container'>
-            <div id='display'>
-                <input onChange={props.handleDisplayChange} value={props.display} onFocus={props.focus} autoFocus />
+            <div id='display-div'>
+                <input
+                    id='display'
+                    onChange={props.handleDisplayChange}
+                    value={props.display}
+                    autoFocus />
             </div>
             <div id='sections'>
-                <div id='top-section'>
+                <div id='left-section'>
                     <div id='all-nums'>
-                        {/* <div className='numbers' id='zero'>0</div> */}
-                        <input type='button' value='1' className='numbers' id='one' onClick={props.digits} />
-                        <input type='button' value='2' className='numbers' id='two' onClick={props.digits} />
-                        <input type='button' value='3' className='numbers' id='three' onClick={props.digits} />
-                        <input type='button' value='4' className='numbers' id='four' onClick={props.digits} />
-                        <input type='button' value='5' className='numbers' id='five' onClick={props.digits} />
-                        <input type='button' value='6' className='numbers' id='six' onClick={props.digits} />
-                        <input type='button' value='7' className='numbers' id='seven' onClick={props.digits} />
-                        <input type='button' value='8' className='numbers' id='eight' onClick={props.digits} />
-                        <input type='button' value='9' className='numbers' id='nine' onClick={props.digits} />
+                        {allNumbers}
                     </div>
                     <div id='all-extras'>
-                        <input type='button' value='0' className='numbers' className='extras' id='zero' onClick={props.digits} />
-                        <input type='button' value='.' className='extras' id='decimal' />
-                        <button className='extras' id='clear' onClick={props.clear}>Clr</button>
-                        <button className='extras' id='equals'>=</button>
+                        {allAdditionals}
                     </div>
                 </div>
-                <div id='bottom-section'>
+                <div id='right-section'>
                     <div id='all-ops'>
-                        <input type='button' value='+' className='operators' id='add' />
-                        <input type='button' value='-' className='operators' id='subract' />
-                        <input type='button' value='*' className='operators' id='multiply' />
-                        <input type='button' value='/' className='operators' id='divide' />
+                        {allOperators}
                     </div>
                 </div>
             </div>

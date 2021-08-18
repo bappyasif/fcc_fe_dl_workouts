@@ -20,7 +20,7 @@ body {
     
 }
 
-#top-section {
+#left-section {
     background-color: darkslategrey;
     width: 80%;
     height: 80%;
@@ -39,6 +39,7 @@ body {
     flex-direction: row-reverse;
     justify-content: center;
     border: .2vw solid grey;
+    border-right: none;
 }
 
 .numbers {
@@ -53,7 +54,7 @@ body {
 
 #all-extras {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-content: center;
     border: .2vw solid darkgrey;
 }
@@ -75,24 +76,24 @@ body {
     background-color: dimgray;
 }
 
-#bottom-section {
+#right-section {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-evenly; */
     border: .2vw solid darkgrey;
 }
 
 .extras {
     width: 6.5vw;
-    height: 8.9vh;
+    height: 7.4vh;
     border: grey solid .4vw;
     border-radius: 20%;
     margin: .2vw;
-    padding-top: 3.5%;
+    /* padding-top: 3.5%; */
     text-align: center;
     background-color: dimgray;
 }
 
-#display {
+#display-div {
     border: .8vw solid yellow;
     background-color: darkslategrey;
     height: 8vh;
