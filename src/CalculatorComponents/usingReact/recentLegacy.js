@@ -216,6 +216,59 @@ export default CalculatorWithReactLibrary
 /**
  * 
  * 
+ calculateValues(v1, v2, op) {
+        console.log('here!!', v1, v2)
+        let calculation = 0, operatorSymbol = this.state.operator[this.state.operator.length-1];
+        switch (op || operatorSymbol) {
+            case '+':
+                // return op ? Number(this.state.calculation) + Number(this.state.display) : Number(this.state.firstOperand) + Number(this.state.display) 
+                // console.log('here!!', v1, v2)
+                // this.setState({operator: this.state.operator.splice(0, this.state.operator.length - 2)})
+                // this.setState({operator: this.state.operator.splice(this.state.operator.length - 1)})
+                // this.setState({operator: this.state.operator.shift()})
+                // this.setState(prevState=>{operator: prevState.operator.shift()})
+                calculation =  Number(v1) + Number(v2);
+                // this.setState({operator: []})
+                return calculation;
+            // return Number(this.state.firstOperand) + Number(this.state.display);
+            case '-':
+                // this.setState({operator: this.state.operator.splice(this.state.operator.length - 1)})
+                // this.setState({operator: this.state.operator.shift()})
+                // this.setState(prevState=>{operator: prevState.operator.shift()})
+                if(this.state.operator.length >= 2) {
+                    if(operatorSymbol == '-') {
+                        let expStr = `${Number(v1)} ${this.state.operator[this.state.operator.length-2]} ${Number(-v2)}`;
+                        calculation = eval(expStr)
+                    } else {
+                       calculation =  Number(v1) - Number(v2);
+                    }
+                    // this.setState({operator: []})
+                }
+                return calculation;
+            case '*':
+                // this.setState({operator: this.state.operator.splice(this.state.operator.length - 1)})
+                // this.setState({operator: this.state.operator.shift()})
+                // this.setState(prevState=>{operator: prevState.operator.shift()})
+                calculation = Number(v1) * Number(v2);
+                // this.setState({operator: []})
+                return calculation;
+            case '/':
+                // this.setState({operator: this.state.operator.splice(this.state.operator.length - 1)})
+                // this.setState({operator: this.state.operator.shift()})
+                // this.setState(prevState=>{operator: prevState.operator.shift()})
+                calculation = Number(v1) / Number(v2);
+                // this.setState({operator: []})
+                return calculation;
+            case '=':
+                console.log('==')
+                return this.state.calculation
+            default: false;
+        }
+        // this.setState(prevState => ({operator: prevState.pop()}))
+        // this.setState({operator: this.state.operator.splice(0, this.state.operator.length - 2)})
+    }
+ * 
+ * 
  handleEquals(evt) {
         if (this.state.calculation) {
             // this.setState({calculation: this.calculateValues(this.state.firstOperand, this.state.display), display: this.calculateValues(this.state.firstOperand, this.state.display), firstOperand: 0, })

@@ -12,7 +12,6 @@ class CalculatorWithReactLibrary extends Component {
             firstOperand: '',
             secondOperand: '',
             operator: [],
-            consecOps: 0,
             decimalFlag: false,
         }
         this.handleDisplay = this.handleDisplay.bind(this);
@@ -23,27 +22,28 @@ class CalculatorWithReactLibrary extends Component {
     }
 
     calculateValues(v1, v2, op) {
-        console.log('here!!', v1, v2)
-        switch (op || this.state.operator[this.state.operator.length-1]) {
+        let calculation = 0, operatorSymbol = this.state.operator[this.state.operator.length-1];
+        if(this.state.operator.length >= 2) {
+            if(operatorSymbol == '-') {
+                let expStr = `${Number(v1)} ${this.state.operator[this.state.operator.length-2]} ${Number(-v2)}`;
+                return calculation = eval(expStr)
+            }
+        }
+        switch (op || operatorSymbol) {
             case '+':
-                // return op ? Number(this.state.calculation) + Number(this.state.display) : Number(this.state.firstOperand) + Number(this.state.display) 
-                // console.log('here!!', v1, v2)
-                // this.setState({operator: this.state.operator.splice(0, this.state.operator.length - 2)})
-                return Number(v1) + Number(v2);
-            // return Number(this.state.firstOperand) + Number(this.state.display);
+                calculation =  Number(v1) + Number(v2);
+                return calculation;
             case '-':
-                return Number(v1) - Number(v2);
+                calculation =  Number(v1) - Number(v2);
+                return calculation;
             case '*':
-                return Number(v1) * Number(v2);
+                calculation = Number(v1) * Number(v2);
+                return calculation;
             case '/':
-                return Number(v1) / Number(v2);
-            case '=':
-                console.log('==')
-                return this.state.calculation
+                calculation = Number(v1) / Number(v2);
+                return calculation;
             default: false;
         }
-        // this.setState(prevState => ({operator: prevState.pop()}))
-        // this.setState({operator: this.state.operator.splice(0, this.state.operator.length - 2)})
     }
 
     showError() {
@@ -57,13 +57,10 @@ class CalculatorWithReactLibrary extends Component {
                 display: this.calculateValues(prevState.calculation ? prevState.calculation : prevState.firstOperand, prevState.display),
                 calculation: this.calculateValues(prevState.calculation ? prevState.calculation : prevState.firstOperand, prevState.display),
                 firstOperand: 0,
-                decimalFlag: false
+                decimalFlag: false,
+                operator: []
             }
         })
-    }
-
-    chainedCalculations(evt) {
-        console.log(this.state, "chained!!")
     }
 
     handleDisplay(evt) {
@@ -71,19 +68,27 @@ class CalculatorWithReactLibrary extends Component {
             console.log(evt.target.value)
             // console.log(consecOps)
             this.setState({operator: [...this.state.operator, evt.target.value], display: 0})
+            // if(this.state.operator.length >= 2) this.setState({operatorsFlag: true})
         }
         if(!this.state.firstOperand) {
             this.setState({firstOperand: this.state.display})
         }
         if(this.state.firstOperand) {
             // this.setState({calculation: this.calculateValues(this.state.firstOperand, this.state.display)})
-            this.setState({calculation: this.calculateValues(this.state.calculation ? this.state.calculation : this.state.firstOperand, this.state.display)})
+            this.setState({
+                calculation: this.calculateValues(this.state.calculation 
+                    ? this.state.calculation 
+                    : this.state.firstOperand, 
+                    this.state.display),
+                // operator: []
+                })
         }
         this.setState({decimalFlag: false})
+        if(this.state.operator.length > 1) this.setState({operator: [].concat(evt.target.value)})
     }
 
     handleClear(evt) {
-        this.setState({ calculation: 0, display: 0, firstOperand: 0, operator: [], decimalFlag: false })
+        this.setState({ calculation: 0, display: 0, firstOperand: 0, operator: [], decimalFlag: false})
     }
 
     handleFocusOnDisplay(evt) {
@@ -114,25 +119,10 @@ class CalculatorWithReactLibrary extends Component {
         this.handleFocusOnDisplay();
     }
 
-    shouldComponentUpdate(props, state) {
-        // console.log(props, state)
-        // if(state.firstOperand && state.secondOperand) this.setState({display: this.calculateValues(state.firstOperand, state.secondOperand)})
-        // this.setState({display: this.calculateValues(state.firstOperand, state.secondOperand)})
-        console.log(state.firstOperand == this.state.firstOperand)
-        return true
-    }
-
-    componentDidUpdate() {
-
-        console.log(this.state, 'update!!')
-        // if(this.state.secondOperand) {
-        //     this.setState({display: this.calculateValues(this.state.firstOperand, this.state.secondOperand, this.state.operator), secondOperand: 0})
-        // }
-    }
-
     render() {
         return (
             <div>
+                {/* <h4>using redux</h4> */}
                 <PresentationalLogic
                     handleDisplayChange={this.handleDisplay}
                     display={this.state.display}

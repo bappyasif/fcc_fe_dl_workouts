@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CalculatorWithReactLibrary from './usingReact'
 import PresentationalLogic from './usingReact/presentational';
+import { CalculatorWithReactRedux } from './usingReactReduxLibrary';
 
 export let numbersData = [
     {
@@ -85,6 +86,7 @@ class ContainerForCalculatorComponents extends Component {
         return (
             <div>
                 <CalculatorWithReactLibrary />
+                <CalculatorWithReactRedux />
             </div>
         )
     }
