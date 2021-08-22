@@ -4,10 +4,10 @@ const MULTIPLY = 'MULTIPLY';
 const DIVIDE = 'DIVIDE';
 const EQUALS = 'EQUALS';
 const CLEAR = 'CLEAR';
-const DIGITS = 'DIGITS';
 const OPERATORS = 'OPERATORS';
+const DECIMAL = 'DECIMAL';
 
-export let rootObject = {display: 0, v1: 0, calculation: 0, operator: []}
+export let rootObject = {display: 0, v1: 0, calculation: 0, operator: [], decimalFlag: false}
 
 
 // export let initialAddition = {info: 'Addition'}
@@ -22,6 +22,18 @@ export let manageActions = (value) => {
         // ...rootObject,
         type: 'source',
         payload: value
+    }
+}
+
+export let manageOperators = () => {
+    return {
+        type: OPERATORS
+    }
+}
+
+export let manageDecimal = () => {
+    return {
+        type: DECIMAL
     }
 }
 
@@ -66,4 +78,4 @@ let manageDivision = (value) => {
     }
 }
 
-export {ADD, SUBTRACT, MULTIPLY, DIVIDE, EQUALS, CLEAR, manageAdditions, manageSubtraction, manageMultiplications, manageDivision }
+export {ADD, SUBTRACT, MULTIPLY, DIVIDE, EQUALS, CLEAR, DECIMAL, OPERATORS, manageAdditions, manageSubtraction, manageMultiplications, manageDivision }
