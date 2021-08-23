@@ -1,0 +1,76 @@
+.another-calculator-container {
+    background-color: midnightblue;
+    font-size: xx-large;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-content: center; */
+    padding: 2vw;
+    max-width: 13em;
+    margin: auto;
+}
+
+#all-sections {
+    margin: .2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    background-color: darkolivegreen;
+    border: silver solid .2em;
+}
+
+.all-nums {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom: silver solid .2em;
+}
+
+.digits {
+    width: 2em;
+    margin: .2em;
+    border: lightslategray solid .11em;
+    border-radius: .2em;
+    background-color: slategrey;
+    color: silver;
+}
+
+.digits:hover, .ops:hover, .extras:hover {
+    background-color: silver;
+    border-color: darkslategray;
+    color: darkslateblue;
+    font-weight: bold;
+}
+
+.ops, .extras{
+    background-color: dimgrey;
+    border: lightgray solid .11em;
+    margin: .11em;
+    color: lightslategrey;
+    border-radius: .2em;
+}
+
+.all-extras {
+    background-color: slategrey;
+}
+
+.right-section {
+    background-color: slateblue;
+    border: silver solid .2em;
+    margin-left: .10vw;
+}
+
+.ops {
+    width: 1.7em;
+    height: 2em;
+}
+
+.extras {
+    width: 2.9em;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CalculatorWithReactLibrary from './usingReact'
+import ExpresssionBasedCalculatorImplementation from './usingReact/expressionBased';
 import PresentationalLogic from './usingReact/presentational';
 import { CalculatorWithReactRedux } from './usingReactReduxLibrary/previousAttempt';
 // import { CalculatorWithReactRedux } from './usingReactReduxLibrary';
@@ -86,6 +87,8 @@ class ContainerForCalculatorComponents extends Component {
     render() {
         return (
             <div>
+                <ExpresssionBasedCalculatorImplementation />
+                <h4>inistant calculation with redux</h4>
                 <CalculatorWithReactLibrary />
                 <CalculatorWithReactRedux />
                 {/* <CalculatorWithReactReduxCurrentAttempt /> */}
