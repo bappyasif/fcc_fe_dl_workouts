@@ -88,9 +88,9 @@ class ContainerForCalculatorComponents extends Component {
         return (
             <div>
                 <ExpresssionBasedCalculatorImplementation />
-                <h4>inistant calculation with redux</h4>
+                {/* <h4>inistant calculation with redux</h4>
                 <CalculatorWithReactLibrary />
-                <CalculatorWithReactRedux />
+                <CalculatorWithReactRedux /> */}
                 {/* <CalculatorWithReactReduxCurrentAttempt /> */}
             </div>
         )

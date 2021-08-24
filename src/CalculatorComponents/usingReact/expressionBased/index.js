@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { PresentationalLogic } from './presentationalLogic';
 // import PresentationalLogic from '../presentational';
 import '../../styling/anotherIndex.css';
+import { infixToPostFix } from './infixToPostFix';
 
 class ExpresssionBasedCalculatorImplementation extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class ExpresssionBasedCalculatorImplementation extends Component {
             secondOperand: '',
             operator: [],
             decimalFlag: false,
+            tokenizedStack: []
         }
         this.handleDisplay = this.handleDisplay.bind(this);
         this.handleClear = this.handleClear.bind(this);
@@ -22,87 +24,97 @@ class ExpresssionBasedCalculatorImplementation extends Component {
     }
 
     handleDisplay(evt) {
-        if(evt.target.value == 0) {
-            this.setState({ display: '' })    
-        } else if(evt.target.value == '0.') {
+        if (evt.target.value == 0) {
+            this.setState({ display: '' })
+        } else if (evt.target.value == '0.') {
             this.setState({ display: '.' })
         } else {
             this.setState({ display: this.state.display ? this.state.display + evt.target.value : evt.target.value })
         }
     }
 
-    handleClear(evt) { this.setState({display: 0, v1: 0, v2:0, calculation: 0, operator: []})}
-    
+    handleClear(evt) { this.setState({ display: 0, v1: 0, v2: 0, calculation: 0, operator: [] }) }
+
     handleFocusOnDisplay(evt) {
         this.setState({ display: '' })
     }
-    
+
     handleEquals(evt) {
-        this.manageEquation();
-        this.setState({display: this.state.calculation, v1: 0, v2:0, calculation: 0, operator: []}) 
+        this.tokenizeEquation();
+        // this.extractTokensFromStack()
+        // this.calculateExpressionFromStack();
+        this.setState({ display: this.state.calculation, v1: 0, v2: 0, calculation: 0, operator: [] })
     }
 
-    manageEquation() {
+    tokenizeEquation() {
         // console.log(this.state.display)
-        let exprDigits = this.state.display.split(/[+|\-|*|\/]/)
-        let exprOps = this.state.display.split(/\d/).filter(op=>op)
-        let rankings = [];
-        exprOps.forEach(op => {
-            let idx = this.getPrecedenceOfOperators(op);
-            rankings.push(idx);
-        })
-        let higherPrecendenceStackPosition = [];
-        let lowerPrecedenceStackPositions = []
-        rankings.forEach((op, idx)=> [2].includes(op) ? higherPrecendenceStackPosition.push(idx) : lowerPrecedenceStackPositions.push(idx))
-        let calculations = [];
-        // let temp = 0;
-        higherPrecendenceStackPosition.forEach((idx, ix)=>{
+        let tokenized = this.state.display.split('')
+        this.setState({ tokenizedStack: tokenized })
+        // console.log(tokenized)     
+    }
 
-            let test = this.doingCalculations(exprDigits, idx, exprOps[idx])
+    extractTokensFromStack() {
+        console.log(this.state.tokenizedStack,)
+        let a = this.state.tokenizedStack.pop();
+        let op = this.state.tokenizedStack.pop();
+        let b = this.state.tokenizedStack.pop();
+        console.log(a, op, b, this.state.tokenizedStack.length, "after!!")
+        // let calculation = this.calculateStack(a,b, op)
+        // console.log(calculation)
+        // this.setState({calculation: calculation})
+        return [a, b, op]
+    }
 
-            if(ix == 0) {
-                console.log(ix, "!!")
-                exprDigits.splice(idx ? idx : 0, 2, test);
-            } else {
-                console.log(idx-1, "??")
-                exprDigits.splice(idx-1 ? idx-1 : 0, idx+1 ? idx+1 : idx, test);
+    calculateStack(operand1, operand2, operator) {
+        let calculation = 0;
+        if (operator) {
+            switch (operator) {
+                case "+":
+                    calculation = Number(operand1) + Number(operand2)
+                    return calculation
+                case "-":
+                    calculation = Number(operand1) - Number(operand2)
+                    return calculation
+                case "*":
+                    calculation = Number(operand1) * Number(operand2)
+                    return calculation
+                case "/":
+                    calculation = Number(operand1) / Number(operand2 ? operand2 : alert('no dividing by zero!!'))
+                    return calculation
+                default: return alert('somethings wrong!!')
             }
-            
-            
-            // let arr = exprDigits.slice(0, idx).concat(exprDigits.slice(idx+1))
-            
-            // temp++;
-            // console.log(idx, idx-temp)
-            // exprDigits = arr;
-        })
-        console.log(exprDigits, exprOps, rankings, higherPrecendenceStackPosition, lowerPrecedenceStackPositions, this.state.display)
-    }
-
-    doingCalculations(arr, idx, op) {
-        let str = `${arr[idx]} ${op} ${arr[idx+1]}`
-        let calculated = eval(str);
-        // arr = arr.slice(0, idx).concat(arr.slice(idx+1))
-        console.log(arr, "chnaged?!", idx, op, calculated, str)
-        return calculated
-    }
-
-    getPrecedenceOfOperators(ops) {
-        switch(ops) {
-            case "+":
-            case "-":
-                return 1;
-            case "*":
-            case "/":
-                return 2;
-            default: alert('operator is not found!!')
         }
     }
+
 
     componentDidMount() {
         this.handleFocusOnDisplay();
     }
-    
+
+    componentDidUpdate(prevProps, prevState) {
+        // this.calculateExpressionFromStack();
+        // // console.log(prevState.tokenizedStack.length == this.state.tokenizedStack.length, prevState.tokenizedStack.length, this.state.tokenizedStack.length)
+        if (prevState.tokenizedStack.length != this.state.tokenizedStack.length) {
+
+            while (this.state.tokenizedStack.length >= 3) {
+                let [a, b, op] = [...this.extractTokensFromStack()]
+                let calculation = this.calculateStack(a, b, op)
+                console.log(calculation, "??")
+                this.setState({ calculation: calculation, tokenizedStack: this.state.tokenizedStack.push(calculation) })
+                console.log("here!!", prevState.tokenizedStack.length, this.state.tokenizedStack.length, this.state.calculation, a, b, op, this.state.calculation)
+
+                if (this.state.tokenizedStack.length <= 1) {
+                    alert(this.state.tokenizedStack[0])
+                }
+            }
+        } else if (this.state.tokenizedStack.length == 2) {
+            alert("wrong expression!!")
+        }
+        // this.extractTokensFromStack()
+    }
+
     render() {
+        infixToPostFix('2+3-6*5/7')
         return (
             <div>
                 <h4>expression based calculator implementation</h4>
