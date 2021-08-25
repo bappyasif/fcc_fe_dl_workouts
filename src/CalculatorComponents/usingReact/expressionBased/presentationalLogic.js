@@ -8,7 +8,7 @@ export function PresentationalLogic(props) {
             <div id='display-div'>
                 <input
                     id='display'
-                    onChange={props.changeDisplay}
+                    onChange={props.handleInput}
                     value={props.display}
                     autoFocus />
             </div>
@@ -33,16 +33,44 @@ export function PresentationalLogic(props) {
 
 
 let DigitButtons = (props) => {
-    let numberButtons = numbersData.map(num => <button key={num.id} className='digits' id={num.id} value={num.value} onClick={props.numbers}>{num.value}</button>)
+    let numberButtons = numbersData.map(num => {
+        return <button
+            key={num.id}
+            className='digits'
+            id={num.id}
+            value={num.value}
+            onClick={props.numbers}>
+            {num.value}
+        </button>
+    }
+    )
     return numberButtons
 }
 
 let OperatorButtons = (props) => {
-    let allOperators = operatorsData.map(op => <button key={op.id} className='ops' id={op.id} value={op.value} onClick={props.operators}>{op.value}</button>)
+    let allOperators = operatorsData.map(op => {
+        return <button
+            key={op.id}
+            className='ops'
+            id={op.id}
+            value={op.value}
+            onClick={props.operators}>
+            {op.value}
+        </button>
+    })
     return allOperators
 }
 
 let AdditionalButtons = (props) => {
-    let otherButtons = additionalsData.map(other => <button key={other.id} className='extras' id={other.id} value={other.value} onClick={other.id == 'clear' ? props.clear : other.id == 'equals' ? props.equals : props.additionals}>{other.value}</button>)
+    let otherButtons = additionalsData.map(other => {
+        return <button
+            key={other.id}
+            className='extras'
+            id={other.id}
+            value={other.value}
+            onClick={other.id == 'clear' ? props.clear : other.id == 'equals' ? props.equals : props.additionals}>
+            {other.value}
+        </button>
+    })
     return otherButtons
 }

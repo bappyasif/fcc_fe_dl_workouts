@@ -1,38 +1,50 @@
 export let infixToPostFix = expr => {
-    let outputString = '';
-    let opStack = [];
-    let tokens = expr.split('');
-    tokens.forEach(char => {
-        let isNumber = !isNaN(char);
-
-        // if operand
-        if (isNumber) {
-            outputString += char;
-        } else {
-            // if operator
-
-            // first remove any operators already on opStack that have higher or equal precedence and append them to outputString
-            let opTOS = opStack[opStack.length - 1 != -1 ? opStack.length - 1 : 0]
-            let stackPrecedence = precedenceChecker(opTOS);
-            let charPrecedence = precedenceChecker(char);
-            while (opStack.length && stackPrecedence >= charPrecedence) {
-                outputString += opStack.pop();
+    let postfixOutput = "";
+    let stack = [];
+    // let tokens = expr.split('');
+    let tokens = expr;
+    // console.log(tokens, "?>>?")
+    for (let idx = 0; idx < tokens.length; idx++) {
+        let currToken = tokens[idx];
+        console.log(currToken);
+        // If operand then push it onto stack
+        if (!isNaN(currToken) || currToken === ".") {
+            // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+            postfixOutput += ' ' + currToken;
+        } else if (currToken === "(") {
+            stack.push(currToken);
+        } else if (currToken === ")") {
+            while (stack.length && stack.peek() !== "(") {
+                // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+                postfixOutput += ' ' + stack.pop();
             }
-            opStack.push(char);
-            // if (opTOS != null) {
-            //     let stackPrecedence = precedenceChecker(opTOS);
-            //     let charPrecedence = precedenceChecker(char);
-            //     while (opStack.length && stackPrecedence >= charPrecedence) {
-            //         outputString += opStack.pop();
-            //     }
-            //     opStack.push(char);
-            // }
+        } else {
+            // an operator encountered
+            while (
+                stack.length &&
+                precedenceChecker(currToken) <= precedenceChecker(stack.peek())
+            ) {
+                // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+                postfixOutput += ' ' + stack.pop();
+            }
+            stack.push(currToken);
         }
-    })
+    }
+    // pop all existing operators from stack
+    while (stack.length) {
+        if (stack.peek() === "(") {
+            return "Invalid Expression";
+        }
+        // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+        postfixOutput += ' ' + stack.pop();
+    }
 
-    while (opStack.length > 0) outputString += opStack.pop();
+    // console.log(postfixOutput)
+    return postfixOutput;
+}
 
-    console.log(outputString)
+Array.prototype.peek = function () {
+    return this[this.length - 1]
 }
 
 let precedenceChecker = op => {
@@ -48,6 +60,62 @@ let precedenceChecker = op => {
 }
 
 /**
+ *
+ *
+ export let infixToPostFix = expr => {
+    let outputString = '';
+    let opStack = [];
+    let tokens = expr.split('');
+    tokens.forEach(char => {
+        let isNumber = !isNaN(char);
+
+        // if operand
+        if (isNumber) {
+            outputString += char;
+        } else if (char == '(') {
+            outputString += char;
+        } else if (char == ')') {
+            while (opStack.length && opStack.peek() != '(') {
+                outputString += opStack.pop();
+            }
+        } else {
+            // if operator
+
+            // first remove any operators already on opStack that have higher or equal precedence and append them to outputString
+            // let opTOS = opStack[opStack.length - 1]
+            let stackPrecedence = precedenceChecker(opStack.peek());
+            let charPrecedence = precedenceChecker(char);
+            while (opStack.length && charPrecedence <= stackPrecedence) {
+                // console.log(opTOS, "??")
+                outputString += opStack.pop();
+            }
+            opStack.push(char);
+            // if (opTOS != null) {
+            //     let stackPrecedence = precedenceChecker(opTOS);
+            //     let charPrecedence = precedenceChecker(char);
+            //     while (opStack.length && stackPrecedence >= charPrecedence) {
+            //         outputString += opStack.pop();
+            //     }
+            //     // opStack.push(char);
+
+            // }
+            // opStack.push(char);
+        }
+    })
+
+    while (opStack.length) {
+        if(opStack.peek() == '(') {
+            alert('wrong expression')
+        }
+        outputString += opStack.pop();
+    }
+
+    console.log(outputString)
+}
+
+Array.prototype.peek = function() {
+    return this[this.length -1]
+}
  *
  *
  export let infixToPostFix = expr => {
