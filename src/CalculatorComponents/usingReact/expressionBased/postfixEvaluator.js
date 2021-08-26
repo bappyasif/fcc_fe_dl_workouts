@@ -16,7 +16,7 @@ export let postfixEvaluator = expr => {
             let a = stack.pop();
             let calculation = calculateExpression(a, b, token);
             stack.push(calculation);
-            console.log(calculation, "calc")
+            console.log(calculation, "calc", a, b, stack)
         }
     })
     console.log(stack, "??")

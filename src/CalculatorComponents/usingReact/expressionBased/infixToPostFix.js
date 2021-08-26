@@ -2,15 +2,39 @@ export let infixToPostFix = expr => {
     let postfixOutput = "";
     let stack = [];
     // let tokens = expr.split('');
-    let tokens = expr;
+    let tokens = expr.filter(ch => ch);
     // console.log(tokens, "?>>?")
+    let minusFlag = false, plusFlag = false;
     for (let idx = 0; idx < tokens.length; idx++) {
         let currToken = tokens[idx];
-        console.log(currToken);
+        let nextToken = tokens[idx + 1 ? idx + 1 : idx];
+        let prevToken = tokens[idx - 1 ? idx - 1 : idx];
+        console.log(currToken, nextToken, postfixOutput, stack, "here!!");
+        if (["+", "*", "/"].includes(currToken) && (nextToken == '-')) minusFlag = true;
+
+        if (currToken == '*' && nextToken == '+') {
+            plusFlag = true;
+        }
+
+        if (currToken == '-' && idx == 0) {
+            minusFlag = true;
+        }
         // If operand then push it onto stack
         if (!isNaN(currToken) || currToken === ".") {
             // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
-            postfixOutput += ' ' + currToken;
+            if (minusFlag) {
+                postfixOutput += ' ' + -currToken;
+                // console.log(postfixOutput, "here::", currToken)
+                minusFlag = false;
+            } 
+            // else if(plusFlag) {
+            //     postfixOutput += ' ' + currToken;
+            //     plusFlag = false
+            // } 
+            else {
+                postfixOutput += ' ' + currToken;
+            }
+            // postfixOutput += ' ' + currToken;
         } else if (currToken === "(") {
             stack.push(currToken);
         } else if (currToken === ")") {
@@ -20,14 +44,28 @@ export let infixToPostFix = expr => {
             }
         } else {
             // an operator encountered
-            while (
-                stack.length &&
-                precedenceChecker(currToken) <= precedenceChecker(stack.peek())
-            ) {
-                // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
-                postfixOutput += ' ' + stack.pop();
+
+            if (!(currToken == '-' && prevToken == '*')) {
+                while (
+                    stack.length &&
+                    precedenceChecker(currToken) <= precedenceChecker(stack.peek())
+                ) {
+                    // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+
+                    postfixOutput += ' ' + stack.pop();
+
+                }
             }
-            stack.push(currToken);
+
+            if ((currToken == '-' && prevToken == '*') || (currToken == '-' && idx == 0)) {
+                // stack.push(prevToken);
+                console.log(stack, postfixOutput, "?>?>")
+            } else {
+                stack.push(currToken);
+                console.log(stack, postfixOutput, "!>!>")
+            }
+
+            // stack.push(currToken);
         }
     }
     // pop all existing operators from stack
@@ -60,6 +98,183 @@ let precedenceChecker = op => {
 }
 
 /**
+ *
+ *
+ export let infixToPostFix = expr => {
+    let postfixOutput = "";
+    let stack = [];
+    // let tokens = expr.split('');
+    let tokens = expr.filter(ch=>ch);
+    // console.log(tokens, "?>>?")
+    let minusFlag = false;
+    for (let idx = 0; idx < tokens.length; idx++) {
+        let currToken = tokens[idx];
+        let nextToken = tokens[idx+1 ? idx+1 : idx];
+        let prevToken = tokens[idx-1 ? idx-1 : idx];
+        console.log(currToken, nextToken, postfixOutput, stack);
+        if(["+", "*", "/"].includes(currToken) && nextToken == '-') minusFlag = true;
+
+        if(currToken == '-' && idx == 0) {
+            minusFlag = true;
+        }
+        // If operand then push it onto stack
+        if (!isNaN(currToken) || currToken === ".") {
+            // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+            if(minusFlag) {
+                postfixOutput += ' ' + -currToken;
+                // console.log(postfixOutput, "here::", currToken)
+                minusFlag = false;
+            } else {
+                // if(prevToken == '-' && idx == 0) {
+                //     postfixOutput += ' ' + -currToken;
+                // } else {
+                //     postfixOutput += ' ' + currToken;
+                // }
+                // console.log(currToken, postfixOutput, 'before');
+                postfixOutput += ' ' + currToken;
+                // console.log(currToken, postfixOutput, 'after');
+                // console.log(postfixOutput, "here::no minus", currToken, prevToken)
+            }
+            // postfixOutput += ' ' + currToken;
+        } else if (currToken === "(") {
+            stack.push(currToken);
+        } else if (currToken === ")") {
+            while (stack.length && stack.peek() !== "(") {
+                // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+                postfixOutput += ' ' + stack.pop();
+            }
+        } else {
+            // an operator encountered
+
+            if(!(currToken == '-' && prevToken == '*') ) {
+                while (
+                    stack.length &&
+                    precedenceChecker(currToken) <= precedenceChecker(stack.peek())
+                ) {
+                    // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+
+                    postfixOutput += ' ' + stack.pop();
+
+                }
+            }
+
+            if((currToken == '-' && prevToken == '*') || (currToken == '-' && idx == 0) ) {
+                // stack.push(prevToken);
+                console.log(stack, postfixOutput, "?>?>")
+            } else {
+                stack.push(currToken);
+                console.log(stack, postfixOutput, "!>!>")
+            }
+
+            // stack.push(currToken);
+        }
+    }
+    // pop all existing operators from stack
+    while (stack.length) {
+        if (stack.peek() === "(") {
+            return "Invalid Expression";
+        }
+        // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+        postfixOutput += ' ' + stack.pop();
+    }
+
+    // console.log(postfixOutput)
+    return postfixOutput;
+}
+ *
+ *
+ export let infixToPostFix = expr => {
+    let postfixOutput = "";
+    let stack = [];
+    // let tokens = expr.split('');
+    let tokens = expr.filter(ch=>ch);
+    // console.log(tokens, "?>>?")
+    let minusFlag = false;
+    for (let idx = 0; idx < tokens.length; idx++) {
+        let currToken = tokens[idx];
+        let nextToken = tokens[idx+1 ? idx+1 : idx];
+        let prevToken = tokens[idx-1 ? idx-1 : idx];
+        console.log(currToken, nextToken, postfixOutput, stack);
+        if(["+", "*", "/"].includes(currToken) && nextToken == '-') minusFlag = true;
+        // If operand then push it onto stack
+        if (!isNaN(currToken) || currToken === ".") {
+            // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+            if(minusFlag) {
+                postfixOutput += ' ' + -currToken;
+                console.log(postfixOutput, "here::", currToken)
+                minusFlag = false;
+            } else {
+                console.log(currToken, postfixOutput, 'before');
+                postfixOutput += ' ' + currToken;
+                console.log(currToken, postfixOutput, 'after');
+                console.log(postfixOutput, "here::no minus", currToken, prevToken)
+            }
+            // postfixOutput += ' ' + currToken;
+        } else if (currToken === "(") {
+            stack.push(currToken);
+        } else if (currToken === ")") {
+            while (stack.length && stack.peek() !== "(") {
+                // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+                postfixOutput += ' ' + stack.pop();
+            }
+        } else {
+            // an operator encountered
+
+            if(currToken == '-' && ["+", "*", "/"].includes(prevToken) ) {
+
+            }
+
+
+            if(!(currToken == '-' && prevToken == '*') ) {
+                while (
+                    stack.length &&
+                    precedenceChecker(currToken) <= precedenceChecker(stack.peek())
+                ) {
+                    // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+
+                    postfixOutput += ' ' + stack.pop();
+
+                }
+            }
+            // while (
+            //     stack.length &&
+            //     precedenceChecker(currToken) <= precedenceChecker(stack.peek())
+            // ) {
+            //     // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+
+            //     // if(currToken == '-' && ["+", "*", "/"].includes(prevToken) ) {
+            //     //     postfixOutput = postfixOutput;
+            //     // } else {
+            //     //     postfixOutput += ' ' + stack.pop();
+            //     // }
+
+            //     postfixOutput += ' ' + stack.pop();
+            //     // console.log(currToken, "why?!", postfixOutput, prevToken)
+            // }
+
+            if(currToken == '-' && prevToken == '*' ) {
+                // stack.push(prevToken);
+                console.log(stack, postfixOutput, "?>?>")
+            } else {
+                stack.push(currToken);
+                console.log(stack, postfixOutput, "!>!>")
+            }
+
+            // stack.push(currToken);
+        }
+    }
+    // pop all existing operators from stack
+    while (stack.length) {
+        if (stack.peek() === "(") {
+            return "Invalid Expression";
+        }
+        // intentionally placing a space infront of each tokens, so that postfix evaluation can easily tokenize postfix expression using a space as delimiters
+        postfixOutput += ' ' + stack.pop();
+    }
+
+    // console.log(postfixOutput)
+    return postfixOutput;
+}
  *
  *
  export let infixToPostFix = expr => {
