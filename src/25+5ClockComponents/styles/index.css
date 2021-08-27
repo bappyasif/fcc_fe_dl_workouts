@@ -1,0 +1,60 @@
+body {
+    background-color: darkolivegreen;
+}
+
+.outer-container {
+    background-color: slategray;
+    border: slateblue dotted .2em;
+}
+
+.inner-container {
+    text-align: center;
+    color: wheat;
+}
+
+.clock-container {
+    border: .2vw solid midnightblue;
+    background-color: blueviolet;
+    max-width: 62%;
+    padding: 2em;
+    margin: auto;
+}
+
+#top-section, .controls-div, #clock-section, #clock-controls, #clock-top {
+    display: flex;
+    justify-content: space-evenly;
+    border: solid .11em firebrick;
+    margin-bottom: .8vw;
+}
+
+#top-section {
+    width: 56%;
+    padding-bottom: 1.1em;
+    margin: auto;
+}
+
+#break-increment, #break-decrement, #session-increment, #session-decrement {
+    margin: 1.1vw;
+}
+
+#clock-section {
+    flex-direction: column;
+    width: 47%;
+    margin: auto;
+    border-top: none;
+    /* border: darkgrey solid .2vw; */
+}
+
+#clock-top, #clock-controls {
+    justify-content: space-around;
+    margin: .89vw;
+}
+
+#start_stop {
+    margin-right: 11%;
+}
+
+#reset {
+    margin-right: 11%;
+}
+
