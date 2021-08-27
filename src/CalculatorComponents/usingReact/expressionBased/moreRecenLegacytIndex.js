@@ -161,3 +161,82 @@ class ExpresssionBasedCalculatorImplementation extends Component {
 }
 
 export default ExpresssionBasedCalculatorImplementation
+
+
+/**
+ * 
+ * 
+     handleDisplay(evt) {
+        let displayContent = '', decimalFlag, lastOp, operatorFlag;
+        if (this.state.display == '0') {
+            displayContent = ''+evt.target.value
+            this.setState({ display: displayContent })
+        } else if(evt.target.value.includes('.')) {
+            if(!this.state.decimalFlag) {
+                // this.setState({ display: this.state.display+evt.target.value, decimalFlag: true })
+                displayContent = this.state.display+evt.target.value;
+                decimalFlag = true;
+                this.manageDisplay(displayContent, decimalFlag)
+            }
+        } else if(["+", "-", "*", "/"].includes(evt.target.value)) {
+            if(this.state.lastOperator == evt.target.value) {
+                console.log('same operator')
+                displayContent = this.state.display;
+                decimalFlag = false;
+                lastOp = evt.target.value
+                // this.setState({ display: this.state.display, decimalFlag: false, lastOperator: evt.target.value })
+                this.manageDisplay(displayContent, decimalFlag, lastOp);
+            } else {
+                console.log('different operator')
+                let test = this.state.display.split('').pop()
+                if(!/\d/.test(test)) {
+                    if(test == '*' && evt.target.value == '-') {
+                        // this.setState({display: this.state.display + evt.target.value, decimalFlag: false, lastOperator: test, operatorFlag: true})
+                        displayContent = this.state.display + evt.target.value;
+                        decimalFlag = false,
+                        lastOp = test,
+                        operatorFlag = true;
+                        this.manageDisplay(displayContent, decimalFlag, lastOp, operatorFlag)
+                    } else {
+                        if(evt.target.value == this.state.display[this.state.display.length -1]) {
+                            // this.setState({display: this.state.display, decimalFlag: false, lastOperator: evt.target.value}) 
+                            displayContent = this.state.display;
+                            decimalFlag = false;
+                            lastOp = evt.target.value;
+                            this.manageDisplay(displayContent, decimalFlag, lastOp)
+                        } else if(this.state.operatorFlag && ["+", "-", "*", "/"].includes(evt.target.value)) {
+                            // let check = this.state.display.split('')[this.state.display.length - 2]
+                            // console.log(evt.target.value, test, check, "what now?!")
+                            // this.setState({display: this.state.display.substring(0, this.state.display.length-2) + evt.target.value, decimalFlag: false, lastOperator: evt.target.value}) 
+                            displayContent = this.state.display.substring(0, this.state.display.length-2)+ evt.target.value;
+                            decimalFlag = false;
+                            lastOp = evt.target.value;
+                            this.manageDisplay(displayContent, decimalFlag, lastOp)
+                            // alert(">?>?")
+                        } else  {
+                            // this.setState({display: this.state.display.substring(0, this.state.display.length-1) + evt.target.value, decimalFlag: false, lastOperator: evt.target.value})
+                            displayContent = this.state.display.substring(0, this.state.display.length-1) + evt.target.value;
+                            decimalFlag = false;
+                            lastOp = evt.target.value
+                            this.manageDisplay(displayContent, decimalFlag, lastOp)
+                        }
+                        // this.setState({display: this.state.display.substring(0, this.state.display.length-1) + evt.target.value, decimalFlag: false, lastOperator: evt.target.value})
+                    }
+                    // this.setState({display: this.state.display.substring(0, this.state.display.length-1) + evt.target.value, decimalFlag: false, lastOperator: evt.target.value})
+                    // console.log("testing: ", test, evt.target.value, this.state.display);
+                } else {
+                    // this.setState({ display: this.state.display + evt.target.value, decimalFlag: false, lastOperator: '' }) 
+                    displayContent = this.state.display + evt.target.value;
+                    decimalFlag = false;
+                    lastOp = '';
+                    this.manageDisplay(displayContent, decimalFlag, lastOp);
+                }
+            }
+        } else if (evt.target.value == '0.') {
+            this.setState({ display: '.' })
+        } else {
+            // this.setState({ display: this.state.display ? this.state.display + evt.target.value : evt.target.value })
+            this.setState({ display: this.state.display + evt.target.value, lastOperator: '' })
+        }
+    }
+ */
