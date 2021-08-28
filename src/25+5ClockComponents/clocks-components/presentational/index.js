@@ -10,27 +10,27 @@ function PresentationalLogics(props) {
                     <div className='header-texts'>Break Session</div>
                     <div id='break-length'>{props.breakTime}</div>
                     <div className='controls-div'>
-                        <div id='break-increment'><FaAngleDoubleUp /></div>
-                        <div id='break-decrement'><FaAngleDoubleDown /></div>
+                        <button id='break-increment' onClick={props.handleClicks}><FaAngleDoubleUp /></button>
+                        <button id='break-decrement' onClick={props.handleClicks}><FaAngleDoubleDown /></button>
                     </div>
                 </div>
                 <div id='session-label'>
                     <div className='header-texts'>Session Time</div>
                     <div id='session-length'>{props.sessionTime}</div>
                     <div className='controls-div'>
-                        <div id='session-increment'><FaAngleDoubleUp /></div>
-                        <div id='session-decrement'><FaAngleDoubleDown /></div>
+                        <button id='session-increment' onClick={props.handleClicks}><FaAngleDoubleUp /></button>
+                        <button id='session-decrement' onClick={props.handleClicks}><FaAngleDoubleDown /></button>
                     </div>
                 </div>
             </div>
             <div id='clock-section'>
                 <div id='clock-top'>
                     <div id='timer-label'>{props.sessionTime}</div>
-                    <div id='time-left'>25:00</div>
+                    <div id='time-left'>{props.timer}</div>
                 </div>
                 <div id='clock-controls'>
-                    <div id='start_stop'><FaPlayCircle /> <FaPauseCircle /></div>
-                    <div id='reset'><MdReplay /></div>
+                    <button id='start_stop' onClick={props.handleClicks}>{!props.timerStatus ? <FaPlayCircle /> : <FaPauseCircle />}</button>
+                    <button id='reset' onClick={props.handleClicks}><MdReplay /></button>
                 </div>
             </div>
         </div>

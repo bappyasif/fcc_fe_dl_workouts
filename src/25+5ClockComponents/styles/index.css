@@ -2,10 +2,10 @@ body {
     background-color: darkolivegreen;
 }
 
-.outer-container {
+/* .outer-container {
     background-color: slategray;
     border: slateblue dotted .2em;
-}
+} */
 
 .inner-container {
     text-align: center;
@@ -13,7 +13,7 @@ body {
 }
 
 .clock-container {
-    border: .2vw solid midnightblue;
+    border: .2vw dotted midnightblue;
     background-color: blueviolet;
     max-width: 62%;
     padding: 2em;
@@ -23,8 +23,9 @@ body {
 #top-section, .controls-div, #clock-section, #clock-controls, #clock-top {
     display: flex;
     justify-content: space-evenly;
-    border: solid .11em firebrick;
-    margin-bottom: .8vw;
+    /* border: solid .11em firebrick; */
+    background-color: darkgray;
+    /* margin-bottom: .8vw; */
 }
 
 #top-section {
@@ -35,6 +36,13 @@ body {
 
 #break-increment, #break-decrement, #session-increment, #session-decrement {
     margin: 1.1vw;
+    background-color: darkkhaki;
+    /* border: firebrick solid .4vw; */
+}
+
+#break-label, #session-label, #clock-controls {
+    background-color: darkolivegreen;
+    font-size: x-large;
 }
 
 #clock-section {
@@ -42,19 +50,25 @@ body {
     width: 47%;
     margin: auto;
     border-top: none;
+    background-color: darkkhaki;
     /* border: darkgrey solid .2vw; */
 }
 
 #clock-top, #clock-controls {
     justify-content: space-around;
     margin: .89vw;
+    font-size: xx-large;
 }
 
-#start_stop {
-    margin-right: 11%;
+#clock-controls {
+    align-items: center;
+    align-content: center;
+    color: goldenrod;
 }
 
-#reset {
-    margin-right: 11%;
+#start_stop, #reset {
+    font-size: xx-large;
+    /* margin-right: 8%; */
+    padding-top: 1.1vh;
 }
 
