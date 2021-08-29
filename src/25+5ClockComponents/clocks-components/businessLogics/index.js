@@ -17,17 +17,20 @@ function Clock25Plus5() {
             // console.log('break increment!!')
         } else if (clickedItem == 'break-decrement') {
             // console.log('break decrement!!')
-            setBreakTime(breakTime - 1)
+            setBreakTime(breakTime - 1 != -1 ? breakTime - 1 : 1)
         } else if (clickedItem == 'session-increment') {
             // console.log('session increment!!')
             setSessionTime(sessionTime + 1)
         } else if (clickedItem == 'session-decrement') {
             // console.log('session decrement!!')
-            setSessionTime(sessionTime - 1)
+            setSessionTime(sessionTime - 1 != -1 ? sessionTime - 1 : 1)
         } else if (clickedItem == 'start_stop') {
-            console.log('start-pause')
+            console.log('start-pause', timerStatus)
             setTimerStatus(!timerStatus)
             beginTimer(sessionTime);
+            // beginTimer();
+            // testTimer()
+            // testingTimer()
         } else if (clickedItem == 'reset') {
             console.log('reset')
             // setResetTimer(resetTimer);
@@ -38,29 +41,33 @@ function Clock25Plus5() {
         }
     }
 
-    let beginTimer = time => {
-        // console.log(time, time*60*60)
-        // let secs = time*60;
+    let beginTimer = (time) => {
+        let testingTime = 2;
         let count = 60;
-        // console.log(millis, "??")
         let timer = setInterval(() => {
-            // time -= 1;
-            // secs --;
             count--;
-            if(count == 0) {
-                count = 60;
-                time--;                
+            if (!timerStatus) {
+                if (count == 0) {
+                    count = 60;
+                    testingTime--;
+                    
+                }
+                setTimer(
+                    `${testingTime - 1 ? testingTime - 1 : "00"}:${count < 10 ? "0" + count : count}`
+                );
             }
-            // time--;
-            setTimer(`${time-1 ? time-1 : '00'}:${count < 10? '0'+count : count}`)
-            // console.log(secs, 'time!!')
-            if(time <= 0) {
-                clearInterval(timer)
-                setTimer('00:00')
-            }
-        }, 1000)
-    }
 
+            if (timerStatus) {
+                clearInterval(timer);
+                count = -4
+            }
+
+            if (testingTime <= 0) {
+                clearInterval(timer);
+                setTimer("00:00");
+            }
+        }, 1000);
+    };
 
     return (
         <div className='inner-container'>
