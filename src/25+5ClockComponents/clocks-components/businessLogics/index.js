@@ -1,74 +1,71 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PresentationalLogics from '../presentational';
+// import TimerComponent from '../timer/legacyIndex';
+// let afterConversionInSeconds = 110;
 
 function Clock25Plus5() {
     let [breakTime, setBreakTime] = useState(5);
     let [sessionTime, setSessionTime] = useState(25);
     let [timerStatus, setTimerStatus] = useState(false);
     let [resetTimer, setResetTimer] = useState(25);
-    let [timer, setTimer] = useState(resetTimer);
+    let [timer, setTimer] = useState(sessionTime);
+    let [seconds, setSeconds] = useState(0);
+    let [minutes, setMinutes] = useState(0);
+    let [timeReamining, setTimeRemaining] = useState(0)
+    // let [timerDisplay, setTimerDisplay] = useState(resetTimer);
+    let timerID, clickedItem;
 
     let handleClicks = (evt) => {
-        // let clickedItem = evt.target.parentNode.parentNode.id || evt.target.parentNode.parentNode.parentNode.id;
-        let clickedItem = evt.target.id || evt.target.parentNode.id || evt.target.parentNode.parentNode.id;
-        // console.log(clickedItem);
-        if (clickedItem == 'break-increment') {
-            setBreakTime(breakTime + 1)
-            // console.log('break increment!!')
-        } else if (clickedItem == 'break-decrement') {
-            // console.log('break decrement!!')
-            setBreakTime(breakTime - 1 != -1 ? breakTime - 1 : 1)
-        } else if (clickedItem == 'session-increment') {
-            // console.log('session increment!!')
-            setSessionTime(sessionTime + 1)
-        } else if (clickedItem == 'session-decrement') {
-            // console.log('session decrement!!')
-            setSessionTime(sessionTime - 1 != -1 ? sessionTime - 1 : 1)
-        } else if (clickedItem == 'start_stop') {
-            console.log('start-pause', timerStatus)
-            setTimerStatus(!timerStatus)
-            beginTimer(sessionTime);
-            // beginTimer();
-            // testTimer()
-            // testingTimer()
-        } else if (clickedItem == 'reset') {
-            console.log('reset')
-            // setResetTimer(resetTimer);
-            // let formattedTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            // console.log(formattedTime)
-            setTimer(resetTimer);
-            setSessionTime(resetTimer);
-        }
-    }
-
-    let beginTimer = (time) => {
-        let testingTime = 2;
-        let count = 60;
-        let timer = setInterval(() => {
-            count--;
+        let clickedItem =
+            evt.target.id ||
+            evt.target.parentNode.id ||
+            evt.target.parentNode.parentNode.id;
+        if (clickedItem == "break-increment") {
+            setBreakTime(breakTime + 1);
+        } else if (clickedItem == "break-decrement") {
+            setBreakTime(breakTime > 1 ? breakTime - 1 : 1);
+        } else if (clickedItem == "session-increment") {
+            setSessionTime(sessionTime < 60 ? sessionTime + 1 : sessionTime);
+        } else if (clickedItem == "session-decrement") {
+            setSessionTime(sessionTime > 1 ? sessionTime - 1 : 1);
+        } else if (clickedItem == "start_stop") {
+            setTimerStatus(!timerStatus);
             if (!timerStatus) {
-                if (count == 0) {
-                    count = 60;
-                    testingTime--;
-                    
-                }
-                setTimer(
-                    `${testingTime - 1 ? testingTime - 1 : "00"}:${count < 10 ? "0" + count : count}`
-                );
+                timeConversion(sessionTime);
+                startTimer()
             }
-
-            if (timerStatus) {
-                clearInterval(timer);
-                count = -4
-            }
-
-            if (testingTime <= 0) {
-                clearInterval(timer);
-                setTimer("00:00");
-            }
-        }, 1000);
+        } else if (clickedItem == "reset") {
+            setTimer("00:00");
+            setSessionTime(25);
+            setBreakTime(5);
+        }
     };
 
+    /**
+     * 
+     * 
+     Personally I would try to decouple:
+        * timer-handling with start/pause/stop
+        * and actual logic done on timer events
+     */
+
+    let startTimer = () => setInterval(tick, 1000)
+
+    let stopTimer = () => clearInterval(tick);
+
+    let tick = () => {
+        timeReamining--;
+        console.log(timeReamining, "<>")
+        if (!timeReamining) stopTimer()
+    }
+
+    let timeConversion = (time) => {
+        let inSeconds = time * 60 * 60;
+        let secondsToDisplay = inSeconds % 60;
+        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+        let minutesToDisplay = minutesRemaining % 60;
+        return { seconds: secondsToDisplay, minutes: minutesToDisplay }
+    }
     return (
         <div className='inner-container'>
             <PresentationalLogics
@@ -78,6 +75,8 @@ function Clock25Plus5() {
                 timerStatus={timerStatus}
                 timer={timer}
             />
+            <button onClick={() => startTimer()}>start</button>
+            {minutes} : {seconds}
         </div>
     )
 }
