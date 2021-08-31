@@ -4,15 +4,15 @@ import PresentationalLogics from '../presentational';
 // let afterConversionInSeconds = 110;
 
 function Clock25Plus5() {
-    let [breakTime, setBreakTime] = useState(5);
-    let [sessionTime, setSessionTime] = useState(25);
+    let [breakTime, setBreakTime] = useState(0);
+    let [sessionTime, setSessionTime] = useState(0);
     let [timerStatus, setTimerStatus] = useState(false);
-    let [resetTimer, setResetTimer] = useState(25);
-    let [timer, setTimer] = useState(sessionTime);
+    // let [resetTimer, setResetTimer] = useState(25);
+    let [timer, setTimer] = useState(0);
     let [seconds, setSeconds] = useState(0);
     let [minutes, setMinutes] = useState(0);
     let [timeReamining, setTimeRemaining] = useState(0)
-    // let [timerDisplay, setTimerDisplay] = useState(resetTimer);
+
     let timerID, clickedItem;
 
     let handleClicks = (evt) => {
@@ -30,42 +30,75 @@ function Clock25Plus5() {
             setSessionTime(sessionTime > 1 ? sessionTime - 1 : 1);
         } else if (clickedItem == "start_stop") {
             setTimerStatus(!timerStatus);
-            if (!timerStatus) {
-                timeConversion(sessionTime);
-                startTimer()
-            }
         } else if (clickedItem == "reset") {
             setTimer("00:00");
             setSessionTime(25);
             setBreakTime(5);
+            setTimeRemaining(0);
+            setTimerStatus(false);
         }
     };
 
-    /**
-     * 
-     * 
-     Personally I would try to decouple:
-        * timer-handling with start/pause/stop
-        * and actual logic done on timer events
-     */
+    useEffect(() => {
 
-    let startTimer = () => setInterval(tick, 1000)
+        if (timerStatus) {
+            // timeConversion(2);
+            timerID = setInterval(() => {
+                // timeConversion(timeReamining || sessionTime * 60);
+                timeConversion(timeReamining > 0 ? timeReamining : sessionTime * 60);
+                // timeConversion(timeReamining);
+                setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+                // timeReamining--;
+                // if(timeReamining < 1) {
+                //     setTimerStatus(false);
+                // }
+                // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+                if (timeReamining == 0) {
+                    setTimerStatus(false);
+                    return clearInterval(timerID)
+                }
+                // timeConversion(timeReamining || sessionTime);
+                // timeReamining--;
+            }, 100)
+        }
+        return () => clearInterval(timerID)
+    }, [timerStatus, timeReamining])
 
-    let stopTimer = () => clearInterval(tick);
-
-    let tick = () => {
-        timeReamining--;
-        console.log(timeReamining, "<>")
-        if (!timeReamining) stopTimer()
-    }
+    useEffect(() => {
+        setSessionTime(25);
+        setBreakTime(5);
+        setTimer('')
+    }, [])
 
     let timeConversion = (time) => {
-        let inSeconds = time * 60 * 60;
+        // let inSeconds = timeReamining ? time : time * 60;
+        let inSeconds = time;
         let secondsToDisplay = inSeconds % 60;
         let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
         let minutesToDisplay = minutesRemaining % 60;
-        return { seconds: secondsToDisplay, minutes: minutesToDisplay }
+
+        // console.log(inSeconds, "sdasjd")
+        // if(inSeconds < 1) {
+        //     setTimerStatus(false);
+        //     console.log(inSeconds, "sdasjd")
+        // }
+
+        inSeconds--;
+        if(inSeconds != -1) {
+            setTimeRemaining(inSeconds);
+            setSeconds(secondsToDisplay)
+            setMinutes(minutesToDisplay) 
+        } else {
+            console.log(inSeconds, "sdasjd")
+            clearInterval(timerID)
+        }
+        // setTimeRemaining(inSeconds);
+        // setSeconds(secondsToDisplay)
+        // setMinutes(minutesToDisplay)
+
+        // setTimer(`${minutesToDisplay < 10 ? '0' + minutesToDisplay : minutesToDisplay} : ${secondsToDisplay < 10 ? '0' + secondsToDisplay : secondsToDisplay}`)
     }
+
     return (
         <div className='inner-container'>
             <PresentationalLogics
@@ -75,7 +108,8 @@ function Clock25Plus5() {
                 timerStatus={timerStatus}
                 timer={timer}
             />
-            <button onClick={() => startTimer()}>start</button>
+            {/* <button onClick={() => startTimer()}>start</button>
+            <button onClick={() => stopTimer()}>stop</button> */}
             {minutes} : {seconds}
         </div>
     )
