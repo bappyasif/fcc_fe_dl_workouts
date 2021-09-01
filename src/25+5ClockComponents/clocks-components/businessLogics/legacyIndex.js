@@ -215,6 +215,259 @@ function Clock25Plus5() {
 
 export default Clock25Plus5
 
+/**
+ * 
+ * 
+     useEffect(() => {
+        if (timerStatus) {
+            timerID = setInterval(() => {
+                let timeObject = timeConversion();
+
+                // console.log(timeReamining, "??", flagged, sessionTime)
+
+                // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+                setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+
+                // console.log(timeReamining, "??", flagged, sessionTime, timer, timeObject.mins, timeObject.secs)
+
+
+                // clocks stops at 2 cycles before it's supposed time which is 0   (timeObject.mins == 0 && timeObject.secs == 1 )|| 
+                if (timeReamining == 0) {
+                    setTimer("00:00");
+                    setTimerStatus(false);
+                    return clearInterval(timerID)
+                } 
+            }, 500)
+        }
+        return () => clearInterval(timerID)
+    }, [!timerStatus, timeReamining])
+
+    let timeConversion = () => {
+        let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+        let secondsToDisplay = inSeconds % 60;
+        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+        let minutesToDisplay = minutesRemaining % 60;
+
+        // setTimeRemaining(inSeconds > 0 ? inSeconds-1 : 60)
+        setTimeRemaining(inSeconds-1)
+
+        // console.log("<><>", inSeconds, timeReamining);
+
+        // if(timeReamining == 0) {
+        //     setTimer("00:00");
+        //     console.log("here", inSeconds, timeReamining);
+        //     setTimerStatus(false);
+        // }
+
+        return {secs: secondsToDisplay, mins: minutesToDisplay}
+    }
+ * 
+ * 
+ useEffect(() => {
+        if (timerStatus) {
+            timerID = setInterval(() => {
+                let timeObject = timeConversion();
+
+                // console.log(timeReamining, "??")
+                // if(timeReamining == 0) flagged = true;
+                console.log(timeReamining, "??", flagged, sessionTime)
+                // clocks never stops, keeps on running
+                // if (timeReamining < 0) clearInterval(timerID)
+
+                // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+                setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+
+                // clocks stops at 2 cycles before it's supposed time which is 0
+                if (timeReamining == 0 && flagged) {
+                    setTimerStatus(false);
+                    return clearInterval(timerID)
+                } 
+            }, 500)
+        }
+        return () => clearInterval(timerID)
+    }, [!timerStatus, timeReamining])
+
+    let timeConversion = () => {
+        // let inSeconds = timeReamining ? time : time * 60;
+        let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+        // let inSeconds = time;
+        let secondsToDisplay = inSeconds % 60;
+        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+        let minutesToDisplay = minutesRemaining % 60;
+
+        setTimeRemaining(inSeconds > 0 ? inSeconds-1 : 60)
+        // if(inSeconds > 59) {
+        //     console.log('what now?!', inSeconds, timeReamining)
+        //     flagged = true;
+        //     // setSessionTime(0)
+        // }
+        return {secs: secondsToDisplay, mins: minutesToDisplay}
+
+        // if(inSeconds-1 < 0 || timeReamining-1 == 0) {
+        //     console.log(inSeconds-1,"here!!", secondsToDisplay, minutesToDisplay)
+        //     setTimerStatus(false)
+        // }
+
+        // console.log(inSeconds == 0 ? 60 : inSeconds-1, "!!", inSeconds-1, inSeconds, timerStatus, "<>", inSeconds-1 <= 0 ? 59 : inSeconds-1, 'mins', minutesToDisplay)
+        // setTimeRemaining(inSeconds-1 < 0 ? 60 : inSeconds-1);
+        // setTimeRemaining(inSeconds == 0 ? 60 : inSeconds-1);
+        // setSeconds(secondsToDisplay)
+        // setMinutes(minutesToDisplay)
+
+        // these two setters has a time difference of 1`2s 
+        // setTimer(`${minutesToDisplay < 10 ? '0' + minutesToDisplay : minutesToDisplay} : ${secondsToDisplay < 10 ? '0' + secondsToDisplay : secondsToDisplay}`)
+        // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+
+    }
+ * 
+ * 
+     useEffect(() => {
+        if (timerStatus) {
+            timerID = setInterval(() => {
+                timeConversion();
+
+                console.log(timeReamining, "??")
+                if(timeReamining == 0) flagged = true;
+                // clocks never stops, keeps on running
+                // if (timeReamining < 0) clearInterval(timerID)
+
+                // clocks stops at 2 cycles before it's supposed time which is 0
+                if (timeReamining == 1) {
+                    setTimerStatus(false);
+                    return clearInterval(timerID)
+                } 
+            }, 500)
+        }
+        return () => clearInterval(timerID)
+    }, [!timerStatus, timeReamining])
+
+    let timeConversion = () => {
+        // let inSeconds = timeReamining ? time : time * 60;
+        let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+        // let inSeconds = time;
+        let secondsToDisplay = inSeconds % 60;
+        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+        let minutesToDisplay = minutesRemaining % 60;
+
+        // if(inSeconds-1 < 0 || timeReamining-1 == 0) {
+        //     console.log(inSeconds-1,"here!!", secondsToDisplay, minutesToDisplay)
+        //     setTimerStatus(false)
+        // }
+
+        console.log(inSeconds == 0 ? 60 : inSeconds-1, "!!", inSeconds-1, inSeconds, timerStatus, "<>", inSeconds-1 <= 0 ? 59 : inSeconds-1, 'mins', minutesToDisplay)
+        // setTimeRemaining(inSeconds-1 < 0 ? 60 : inSeconds-1);
+        setTimeRemaining(inSeconds == 0 ? 60 : inSeconds-1);
+        setSeconds(secondsToDisplay)
+        setMinutes(minutesToDisplay)
+
+        if(inSeconds == 59  && minutesToDisplay > 0 && flagged) {
+            console.log(inSeconds-1,"here!!", secondsToDisplay, minutesToDisplay)
+            // setTimerStatus(false)
+            flagged = false;
+        }
+
+        // if(secondsToDisplay == 0 && minutesToDisplay == 0) {
+        //     console.log(inSeconds-1,"here!!", secondsToDisplay, minutesToDisplay)
+        //     setTimerStatus(false)
+        // }
+
+        // const newTime = timeReamining - 1;
+        // setTimeRemaining(newTime);
+       
+
+
+        // console.log(seconds, minutes, "why is it running twice on each interval or not!?", secondsToDisplay, minutesToDisplay, timer)
+
+        // these two setters has a time difference of 1`2s 
+        setTimer(`${minutesToDisplay < 10 ? '0' + minutesToDisplay : minutesToDisplay} : ${secondsToDisplay < 10 ? '0' + secondsToDisplay : secondsToDisplay}`)
+        // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+
+    }
+ * 
+ * 
+ useEffect(() => {
+        if (timerStatus) {
+            timerID = setInterval(() => {
+                timeConversion(timeReamining || sessionTime);
+                // timeReamining--; // direct change of state, must be always avoided
+                
+                // safer approach
+                // const newTime = timeReamining - 1;
+                // setTimeRemaining(newTime);
+                // newTime--;
+
+
+                // clocks never stops, keeps on running
+                // if (timeReamining < 0) clearInterval(timerID)
+
+                // clocks stops at 2 cycles before it's supposed time which is 0
+                if (timeReamining <= 0) {
+                    setTimerStatus(false);
+                    return clearInterval(timerID)
+                } else {
+                    return
+                }
+            }, 500)
+        }
+        return () => clearInterval(timerID)
+    }, [!timerStatus, timeReamining])
+ *
+ *
+ // useEffect(() => {
+
+    //     if (timerStatus) {
+    //         // timeConversion(2);
+    //         timerID = setInterval(() => {
+    //             // timeConversion(timeReamining || sessionTime * 60);
+    //             timeConversion(timeReamining > 0 ? timeReamining : sessionTime * 60);
+    //             // timeConversion(timeReamining);
+    //             setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+    //             // timeReamining--;
+    //             // if(timeReamining < 1) {
+    //             //     setTimerStatus(false);
+    //             // }
+    //             // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+    //             if (timeReamining == 0) {
+    //                 setTimerStatus(false);
+    //                 return clearInterval(timerID)
+    //             }
+    //             // timeConversion(timeReamining || sessionTime);
+    //             // timeReamining--;
+    //         }, 100)
+    //     }
+    //     return () => clearInterval(timerID)
+    // }, [timerStatus, timeReamining])
+
+    // let timeConversion = (time) => {
+    //     // let inSeconds = timeReamining ? time : time * 60;
+    //     let inSeconds = time;
+    //     let secondsToDisplay = inSeconds % 60;
+    //     let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+    //     let minutesToDisplay = minutesRemaining % 60;
+
+    //     // console.log(inSeconds, "sdasjd")
+    //     // if(inSeconds < 1) {
+    //     //     setTimerStatus(false);
+    //     //     console.log(inSeconds, "sdasjd")
+    //     // }
+
+    //     inSeconds--;
+    //     if(inSeconds != -1) {
+    //         setTimeRemaining(inSeconds);
+    //         setSeconds(secondsToDisplay)
+    //         setMinutes(minutesToDisplay)
+    //     } else {
+    //         console.log(inSeconds, "sdasjd")
+    //         clearInterval(timerID)
+    //     }
+    //     // setTimeRemaining(inSeconds);
+    //     // setSeconds(secondsToDisplay)
+    //     // setMinutes(minutesToDisplay)
+
+    //     // setTimer(`${minutesToDisplay < 10 ? '0' + minutesToDisplay : minutesToDisplay} : ${secondsToDisplay < 10 ? '0' + secondsToDisplay : secondsToDisplay}`)
+    // }
+ */
+
 
 /**
  * 

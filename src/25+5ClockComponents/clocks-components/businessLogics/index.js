@@ -1,8 +1,9 @@
+import { faLeaf } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react'
 import PresentationalLogics from '../presentational';
 // import TimerComponent from '../timer/legacyIndex';
 // let afterConversionInSeconds = 110;
-
+let flagged = false;
 function Clock25Plus5() {
     let [breakTime, setBreakTime] = useState(0);
     let [sessionTime, setSessionTime] = useState(0);
@@ -11,9 +12,9 @@ function Clock25Plus5() {
     let [timer, setTimer] = useState(0);
     let [seconds, setSeconds] = useState(0);
     let [minutes, setMinutes] = useState(0);
-    let [timeReamining, setTimeRemaining] = useState(0)
+    let [timeReamining, setTimeRemaining] = useState(undefined);
 
-    let timerID, clickedItem;
+    let timerID;
 
     let handleClicks = (evt) => {
         let clickedItem =
@@ -34,70 +35,49 @@ function Clock25Plus5() {
             setTimer("00:00");
             setSessionTime(25);
             setBreakTime(5);
-            setTimeRemaining(0);
+            setTimeRemaining(undefined);
             setTimerStatus(false);
         }
     };
 
     useEffect(() => {
-
         if (timerStatus) {
-            // timeConversion(2);
             timerID = setInterval(() => {
-                // timeConversion(timeReamining || sessionTime * 60);
-                timeConversion(timeReamining > 0 ? timeReamining : sessionTime * 60);
-                // timeConversion(timeReamining);
-                setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
-                // timeReamining--;
-                // if(timeReamining < 1) {
-                //     setTimerStatus(false);
-                // }
-                // setTimer(`${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`)
+                let timeObject = timeConversion();
+
+                setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+
                 if (timeReamining == 0) {
+                    setTimer("00:00");
+                    setTimeRemaining(undefined);
                     setTimerStatus(false);
                     return clearInterval(timerID)
-                }
-                // timeConversion(timeReamining || sessionTime);
-                // timeReamining--;
-            }, 100)
+                } 
+            }, 500)
         }
         return () => clearInterval(timerID)
-    }, [timerStatus, timeReamining])
+    }, [!timerStatus, timeReamining])
+
+    let timeConversion = () => {
+        let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+        
+        let secondsToDisplay = inSeconds % 60;
+
+        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+       
+        let minutesToDisplay = minutesRemaining % 60;
+
+        setTimeRemaining(inSeconds-1)
+
+        return {secs: secondsToDisplay, mins: minutesToDisplay}
+    }
+
 
     useEffect(() => {
         setSessionTime(25);
         setBreakTime(5);
         setTimer('')
     }, [])
-
-    let timeConversion = (time) => {
-        // let inSeconds = timeReamining ? time : time * 60;
-        let inSeconds = time;
-        let secondsToDisplay = inSeconds % 60;
-        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
-        let minutesToDisplay = minutesRemaining % 60;
-
-        // console.log(inSeconds, "sdasjd")
-        // if(inSeconds < 1) {
-        //     setTimerStatus(false);
-        //     console.log(inSeconds, "sdasjd")
-        // }
-
-        inSeconds--;
-        if(inSeconds != -1) {
-            setTimeRemaining(inSeconds);
-            setSeconds(secondsToDisplay)
-            setMinutes(minutesToDisplay) 
-        } else {
-            console.log(inSeconds, "sdasjd")
-            clearInterval(timerID)
-        }
-        // setTimeRemaining(inSeconds);
-        // setSeconds(secondsToDisplay)
-        // setMinutes(minutesToDisplay)
-
-        // setTimer(`${minutesToDisplay < 10 ? '0' + minutesToDisplay : minutesToDisplay} : ${secondsToDisplay < 10 ? '0' + secondsToDisplay : secondsToDisplay}`)
-    }
 
     return (
         <div className='inner-container'>
