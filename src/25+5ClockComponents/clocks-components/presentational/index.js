@@ -25,16 +25,27 @@ function PresentationalLogics(props) {
             </div>
             <div id='clock-section'>
                 <div id='clock-top'>
+                    {/* <div id='timer-label'>{props.sessionTime < 10 ? '0'+props.sessionTime : props.sessionTime}:00</div> */}
                     <div id='timer-label'>{props.sessionTime}</div>
+                    {/* <div id='time-left'>{props.timer < 10 ? '0'+props.timer+':00' : props.timer+':00'}</div> */}
                     <div id='time-left'>{props.timer}</div>
                 </div>
                 <div id='clock-controls'>
-                    <button id='start_stop' onClick={props.handleClicks}>{!props.timerStatus ? <FaPlayCircle /> : <FaPauseCircle />}</button>
+                    {/* <button id='start_stop' onClick={props.handleClicks}>{(!props.timerStatus || props.breakTimerStatus) ? <FaPlayCircle /> : <FaPauseCircle />}</button> */}
+                    <button id='start_stop' onClick={props.handleClicks}>{showPlayOrPause(props)}</button>
                     <button id='reset' onClick={props.handleClicks}><MdReplay /></button>
                 </div>
             </div>
         </div>
     )
+}
+
+let showPlayOrPause = (props) => {
+    if(props.breakTimerStatus) {
+        return (!props.breakTimerStatus) ? <FaPlayCircle /> : <FaPauseCircle />
+    } else {
+        return (!props.timerStatus) ? <FaPlayCircle /> : <FaPauseCircle />
+    }
 }
 
 export default PresentationalLogics

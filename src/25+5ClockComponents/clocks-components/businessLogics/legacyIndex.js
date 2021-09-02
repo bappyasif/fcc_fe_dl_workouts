@@ -218,6 +218,162 @@ export default Clock25Plus5
 /**
  * 
  * 
+ /**
+ *
+ *
+     let handleClicks = (evt) => {
+        let clickedItem =
+            evt.target.id ||
+            evt.target.parentNode.id ||
+            evt.target.parentNode.parentNode.id;
+        if (clickedItem == "break-increment") {
+            setBreakTime(breakTime + 1);
+        } else if (clickedItem == "break-decrement") {
+            setBreakTime(breakTime > 1 ? breakTime - 1 : 1);
+        } else if (clickedItem == "session-increment") {
+            setSessionTime(sessionTime < 60 ? sessionTime + 1 : sessionTime);
+        } else if (clickedItem == "session-decrement") {
+            setSessionTime(sessionTime > 1 ? sessionTime - 1 : 1);
+        } else if (clickedItem == "start_stop") {
+            setTimerStatus(!timerStatus);
+
+            // setBreakTimerStatus(!breakTimerStatus);
+
+            // if(setTest) {
+            //     console.log(breakTimerStatus, "break here?!")
+            //     setBreakTimerStatus(!breakTimerStatus);
+            // }
+            // else {
+            //     console.log('sesson timer');
+            //     setTimerStatus(!timerStatus);
+            // }
+        } else if (clickedItem == "reset") {
+            setTimer("00:00");
+            setSessionTime(25);
+            setBreakTime(5);
+            setTimeRemaining(undefined);
+            setTimerStatus(false);
+            setBreakTimerStatus(false);
+        }
+    };
+
+    useEffect(() => {
+        if (timerStatus) {
+            timerID = setInterval(() => {
+                // let timeObject = timeConversion();
+                // setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+                tick();
+
+                if (timeReamining == 0) {
+                    flagged = true;
+                    setTest(true);
+                    setTimer("00:00");
+                    setTimeRemaining(undefined);
+                    setTimerStatus(false);
+                    setBreakTimerStatus(true);
+                    return clearInterval(timerID)
+                }
+            }, 500)
+        }
+        return () => clearInterval(timerID)
+    }, [!timerStatus, timeReamining])
+
+    useEffect(() => {
+        // console.log(breakTimerStatus, "here?!")
+        if (breakTimerStatus) {
+            breakTimerID = setInterval(() => {
+                // console.log('before!!', timeReamining, breakTime)
+                tick();
+                // let timeObject = timeConversion();
+
+                // setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+                // console.log('after!!', timeReamining, breakTime);
+                if (timeReamining == 0) {
+                    setBreakTimerStatus(false);
+                    flagged = false;
+                    setTest(false);
+                    setTimeRemaining(undefined);
+                    clearInterval(breakTimerID)
+                }
+                // return () => clearInterval(timerID)
+            }, 500)
+        }
+        return () => clearInterval(breakTimerID)
+    }, [breakTimerStatus, timeReamining])
+
+    let tick = () => {
+        let timeObject = timeConversion();
+
+        setTimer(
+            `${timeObject.mins < 10 ? "0" + timeObject.mins : timeObject.mins} : ${
+              timeObject.secs < 10 ? "0" + timeObject.secs : timeObject.secs
+            }`
+          );
+    }
+
+    let timeConversion = () => {
+        // let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+        let inSeconds;
+
+        if (breakTimerStatus) {
+            inSeconds = timeReamining ? timeReamining : breakTime * 60;
+        } else {
+            inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+        }
+
+        let secondsToDisplay = inSeconds % 60;
+
+        let minutesRemaining = (inSeconds - secondsToDisplay) / 60;
+
+        let minutesToDisplay = minutesRemaining % 60;
+
+        setTimeRemaining(inSeconds - 1)
+        // console.log(inSeconds, timeReamining, '??')
+
+        return { secs: secondsToDisplay, mins: minutesToDisplay }
+    }
+ *
+ *
+     useEffect(() => {
+        if (timerStatus) {
+            timerID = setInterval(() => {
+                let timeObject = timeConversion();
+
+                setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+
+                if (timeReamining == 0) {
+                    setTimer("00:00");
+                    setTimeRemaining(undefined);
+                    setTimerStatus(false);
+                    setBreakTimerStatus(true);
+                    return clearInterval(timerID)
+                }
+            }, 500)
+        }
+
+        if (breakTimerStatus) {
+            breakTimerID = setInterval(() => {
+                console.log('before!!', timeReamining, breakTime)
+                // tick();
+                let timeObject = timeConversion();
+
+                setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+                console.log('after!!', timeReamining, breakTime);
+                if (timeReamining == 0) clearInterval(breakTimerID)
+                // return () => clearInterval(timerID)
+            }, 500)
+        }
+        return () => clearInterval(timerID)
+    }, [!timerStatus, breakTimerStatus, timeReamining])
+
+    let tick = () => {
+        let timeObject = timeConversion();
+
+        setTimer(`${timeObject.mins < 10 ? '0' + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? '0' + timeObject.secs : timeObject.secs}`)
+    }
+ 
+ * 
+ * 
      useEffect(() => {
         if (timerStatus) {
             timerID = setInterval(() => {
