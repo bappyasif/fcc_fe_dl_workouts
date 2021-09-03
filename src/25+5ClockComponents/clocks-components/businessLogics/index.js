@@ -6,7 +6,7 @@ import PresentationalLogics from '../presentational';
 let flagged = false;
 function Clock25Plus5() {
     let [breakTime, setBreakTime] = useState(0);
-    let [sessionTime, setSessionTime] = useState(0);
+    let [sessionTime, setSessionTime] = useState(25);
     let [timerStatus, setTimerStatus] = useState(false);
     // let [resetTimer, setResetTimer] = useState(25);
     let [timer, setTimer] = useState(0);
@@ -15,8 +15,12 @@ function Clock25Plus5() {
     let [timeReamining, setTimeRemaining] = useState(undefined);
     let [breakTimerStatus, setBreakTimerStatus] = useState(false);
     let [timerFlag, setTimerFlag] = useState(false);
+    let [breakIncrement, setBreakIncrement] = useState(false)
+    let [breakDecrement, setBreakDecrement] = useState(false)
+    let [sessionIncrement, setSessionIncrement] = useState(false)
+    let [sessionDecrement, setSessionDecrement] = useState(false)
 
-    let timerID, breakTimerID, flagged;
+    let timerID, breakTimerID, flagged, timerLabel;
 
     let handleClicks = (evt) => {
         let clickedItem =
@@ -32,31 +36,40 @@ function Clock25Plus5() {
         } else if (clickedItem == "session-decrement") {
             setSessionTime(sessionTime > 1 ? sessionTime - 1 : 1);
         } else if (clickedItem == "start_stop") {
-            if(timerFlag) {
+            if (timerFlag) {
                 setBreakTimerStatus(!breakTimerStatus);
-            } 
+            }
             else {
                 setTimerStatus(!timerStatus);
             }
+            toggleButtonsWithDisable()
         } else if (clickedItem == "reset") {
             // setTimer(25);
-            setTimer("00:00");
+            // setTimer("00:00");
+            timerLabel = document.querySelector('#timer-label');
+            timerLabel.textContent = 'Session Timer';
+            setTimer(0);
             setSessionTime(25);
             setBreakTime(5);
             setTimeRemaining(undefined);
             setTimerStatus(false);
             setBreakTimerStatus(false);
             setTimerFlag(false);
+            toggleButtonsWithDisable();
         }
     };
 
     useEffect(() => {
+        timerLabel = document.querySelector('#timer-label');
         if (timerStatus) {
             timerID = setInterval(() => {
                 tick();
 
                 if (timeReamining == 0) {
+                    // timerLabel = document.querySelector('#timer-label');
+                    timerLabel.textContent = 'break begins'
                     setTimerFlag(true);
+                    // setTimer(0);
                     setTimer("00:00");
                     setTimeRemaining(undefined);
                     setTimerStatus(false);
@@ -69,12 +82,18 @@ function Clock25Plus5() {
     }, [!timerStatus, timeReamining])
 
     useEffect(() => {
+        timerLabel = document.querySelector('#timer-label');
         if (breakTimerStatus) {
             breakTimerID = setInterval(() => {
                 tick();
                 if (timeReamining == 0) {
+                    // timerLabel = document.querySelector('#timer-label');
+                    timerLabel.textContent = 'break ends'
+                    // setTimer("00:00");
+                    setTimer(sessionTime < 10 ? '0' + sessionTime + ':00' : sessionTime + ':00');
                     setBreakTimerStatus(false);
                     setTimerFlag(false);
+                    setTimerStatus(true);
                     setTimeRemaining(undefined);
                     clearInterval(breakTimerID)
                 }
@@ -84,12 +103,21 @@ function Clock25Plus5() {
     }, [breakTimerStatus, timeReamining])
 
     let tick = () => {
+        timerLabel = document.querySelector('#timer-label');
+        timerLabel.textContent ='Timer Begins';
         let timeObject = timeConversion();
 
         setTimer(
-            `${timeObject.mins < 10 ? "0" + timeObject.mins : timeObject.mins} : ${timeObject.secs < 10 ? "0" + timeObject.secs : timeObject.secs
-            }`
-        );
+            `${timeObject.mins < 10 ? "0" + timeObject.mins : timeObject.mins}:${timeObject.secs < 10 ? "0" + timeObject.secs : timeObject.secs}`
+          );
+    }
+
+    let toggleButtonsWithDisable = () => {
+        setBreakIncrement(!breakIncrement)
+        setBreakDecrement(!breakDecrement)
+
+        setSessionIncrement(!sessionIncrement)
+        setSessionDecrement(!sessionDecrement)
     }
 
     let timeConversion = () => {
@@ -116,11 +144,19 @@ function Clock25Plus5() {
 
 
     useEffect(() => {
-        setSessionTime(25);
+        timerLabel = document.querySelector('#timer-label');
+        // setSessionTime(25);
         setBreakTime(5);
         // setTimer("00:00");
-        setTimer(25);
-    }, [])
+        setTimer(sessionTime < 10 ? '0' + sessionTime + ':00' : sessionTime + ':00');
+    }, [sessionTime])
+
+    // useEffect(() => {
+    //     // setSessionTime(25);
+    //     setBreakTime(5);
+    //     // setTimer("00:00");
+    //     setTimer(sessionTime < 10 ? '0'+sessionTime+':00' : sessionTime+':00');
+    // }, [])
 
     return (
         <div className='inner-container'>
@@ -131,6 +167,10 @@ function Clock25Plus5() {
                 timerStatus={timerStatus}
                 breakTimerStatus={breakTimerStatus}
                 timer={timer}
+                breakIncrement={breakIncrement}
+                breakDecrement={breakDecrement}
+                sessionIncrement={sessionIncrement}
+                sessionDecrement={sessionDecrement}
             />
             {/* <button onClick={() => startTimer()}>start</button>
             <button onClick={() => stopTimer()}>stop</button> */}
