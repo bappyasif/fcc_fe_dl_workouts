@@ -3,6 +3,7 @@ import {FaPlay, FaStop, FaAngleUp, FaAngleDoubleUp, FaAngleDoubleDown, FaPlayCir
 import {MdReplay, MdKeyboardArrowUp, MdVolumeUp} from "react-icons/md"
 
 function PresentationalLogics(props) {
+    console.log(props.isPlaying, "is it")
     return (
         <div className='clock-container'>
             <div id='top-section'>
@@ -39,6 +40,7 @@ function PresentationalLogics(props) {
                     <button id='start_stop' onClick={props.handleClicks}>{showPlayOrPause(props)}</button>
                     <button id='reset' onClick={props.handleClicks}><MdReplay /></button>
                 </div>
+                <audio id='beep' src='https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg' autoPlay={props.isPlaying} />
             </div>
         </div>
     )
