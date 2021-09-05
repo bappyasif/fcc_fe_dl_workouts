@@ -3,7 +3,6 @@ import {FaPlay, FaStop, FaAngleUp, FaAngleDoubleUp, FaAngleDoubleDown, FaPlayCir
 import {MdReplay, MdKeyboardArrowUp, MdVolumeUp} from "react-icons/md"
 
 function PresentationalLogics(props) {
-    console.log(props.isPlaying, "is it")
     return (
         <div className='clock-container'>
             <div id='top-section'>

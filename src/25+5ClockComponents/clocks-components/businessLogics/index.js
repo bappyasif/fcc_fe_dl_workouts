@@ -23,8 +23,9 @@ function Clock25Plus5() {
   let [audioUrl, setAudioUrl] = useState(
     "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
   );
+  let [test, setTest] = useState(false);
 
-  let timerID, breakTimerID, flagged, timerLabel;
+  let timerID, breakTimerID, flagged= true, timerLabel;
   let url = "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg";
 
   let playingAudio = () => {
@@ -49,8 +50,14 @@ function Clock25Plus5() {
       setBreakTime(breakTime > 1 ? breakTime - 1 : 1);
     } else if (clickedItem == "session-increment") {
       setSessionTime(sessionTime < 60 ? sessionTime + 1 : sessionTime);
+      // flagged = false;
+      // console.log(flagged, "!!")
+      setTest(false);
     } else if (clickedItem == "session-decrement") {
       setSessionTime(sessionTime > 1 ? sessionTime - 1 : 1);
+      // flagged = false;
+      // console.log(flagged, "?!")
+      setTest(false);
     } else if (clickedItem == "start_stop") {
       if (timerFlag) {
         setBreakTimerStatus(!breakTimerStatus);
@@ -137,20 +144,20 @@ function Clock25Plus5() {
   };
 
   let toggleButtonsWithDisable = () => {
-    console.log(timerStatus, breakTimerStatus, "what what?!");
-    if (timerStatus || breakTimerStatus) {
-      setBreakIncrement(true);
-      setBreakDecrement(true);
+    // console.log(timerStatus, breakTimerStatus, "what what?!");
+    // if (timerStatus || breakTimerStatus) {
+    //   setBreakIncrement(true);
+    //   setBreakDecrement(true);
 
-      setSessionIncrement(true);
-      setSessionDecrement(true);
-    } else {
-      setBreakIncrement(false);
-      setBreakDecrement(false);
+    //   setSessionIncrement(true);
+    //   setSessionDecrement(true);
+    // } else {
+    //   setBreakIncrement(false);
+    //   setBreakDecrement(false);
 
-      setSessionIncrement(false);
-      setSessionDecrement(false);
-    }
+    //   setSessionIncrement(false);
+    //   setSessionDecrement(false);
+    // }
   };
 
   let timeConversion = () => {
@@ -160,7 +167,21 @@ function Clock25Plus5() {
     if (breakTimerStatus) {
       inSeconds = timeReamining ? timeReamining : breakTime * 60;
     } else {
-      inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+      // if(test) {
+      //   console.log('here', sessionTime)
+      // } else {
+      //   console.log('here else', sessionTime)
+      // }
+      if(!test) {
+        setTest(true);
+        // console.log(flagged, "??")
+        console.log('if')
+        inSeconds = sessionTime * 60;
+      } else {
+        console.log('else')
+        inSeconds = timeReamining ? timeReamining : sessionTime * 60;
+      }
+      // inSeconds = timeReamining ? timeReamining : sessionTime * 60;
     }
 
     let secondsToDisplay = inSeconds % 60;
