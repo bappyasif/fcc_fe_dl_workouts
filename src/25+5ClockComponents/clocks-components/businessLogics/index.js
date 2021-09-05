@@ -19,6 +19,7 @@ function Clock25Plus5() {
   let [breakDecrement, setBreakDecrement] = useState(false);
   let [sessionIncrement, setSessionIncrement] = useState(false);
   let [sessionDecrement, setSessionDecrement] = useState(false);
+  let [sessionStarted, setSessionStarted] = useState(0);
   let [audioPlaying, setAudioPlaying] = useState(false);
   let [audioUrl, setAudioUrl] = useState(
     "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
@@ -57,6 +58,7 @@ function Clock25Plus5() {
       } else {
         setTimerStatus(!timerStatus);
       }
+      // setSessionStarted(sessionTime);
       //   toggleButtonsWithDisable();
     } else if (clickedItem == "reset") {
       // setTimer(25);
@@ -136,30 +138,19 @@ function Clock25Plus5() {
     );
   };
 
-  let toggleButtonsWithDisable = () => {
-    console.log(timerStatus, breakTimerStatus, "what what?!");
-    if (timerStatus || breakTimerStatus) {
-      setBreakIncrement(true);
-      setBreakDecrement(true);
-
-      setSessionIncrement(true);
-      setSessionDecrement(true);
-    } else {
-      setBreakIncrement(false);
-      setBreakDecrement(false);
-
-      setSessionIncrement(false);
-      setSessionDecrement(false);
-    }
-  };
-
   let timeConversion = () => {
     // let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
     let inSeconds;
 
     if (breakTimerStatus) {
+      // consider sessioTime or breakTime being changed after timer starts
       inSeconds = timeReamining ? timeReamining : breakTime * 60;
     } else {
+      if(sessionTime != sessionStarted) {
+        console.log('here', sessionStarted, sessionTime)
+      } else {
+        console.log('here else', sessionStarted, sessionTime)
+      }
       inSeconds = timeReamining ? timeReamining : sessionTime * 60;
     }
 
@@ -183,6 +174,7 @@ function Clock25Plus5() {
     setTimer(
       sessionTime < 10 ? "0" + sessionTime + ":00" : sessionTime + ":00"
     );
+    setSessionStarted(sessionTime);
   }, [sessionTime]);
 
   // useEffect(() => {
@@ -191,6 +183,23 @@ function Clock25Plus5() {
   //     // setTimer("00:00");
   //     setTimer(sessionTime < 10 ? '0'+sessionTime+':00' : sessionTime+':00');
   // }, [])
+
+  let toggleButtonsWithDisable = () => {
+    // console.log(timerStatus, breakTimerStatus, "what what?!");
+    if (timerStatus || breakTimerStatus) {
+      setBreakIncrement(true);
+      setBreakDecrement(true);
+
+      setSessionIncrement(true);
+      setSessionDecrement(true);
+    } else {
+      setBreakIncrement(false);
+      setBreakDecrement(false);
+
+      setSessionIncrement(false);
+      setSessionDecrement(false);
+    }
+  };
 
   return (
     <div className="inner-container">
