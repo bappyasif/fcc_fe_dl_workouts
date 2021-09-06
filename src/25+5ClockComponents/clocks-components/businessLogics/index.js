@@ -8,25 +8,14 @@ function Clock25Plus5() {
   let [breakTime, setBreakTime] = useState(0);
   let [sessionTime, setSessionTime] = useState(25);
   let [timerStatus, setTimerStatus] = useState(false);
-  // let [resetTimer, setResetTimer] = useState(25);
   let [timer, setTimer] = useState(0);
-  let [seconds, setSeconds] = useState(0);
-  let [minutes, setMinutes] = useState(0);
   let [timeReamining, setTimeRemaining] = useState(undefined);
   let [breakTimerStatus, setBreakTimerStatus] = useState(false);
   let [timerFlag, setTimerFlag] = useState(false);
-  let [breakIncrement, setBreakIncrement] = useState(false);
-  let [breakDecrement, setBreakDecrement] = useState(false);
-  let [sessionIncrement, setSessionIncrement] = useState(false);
-  let [sessionDecrement, setSessionDecrement] = useState(false);
   let [audioPlaying, setAudioPlaying] = useState(false);
-  let [audioUrl, setAudioUrl] = useState(
-    "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
-  );
-  let [test, setTest] = useState(false);
+  let [isSessionTimeChanged, setIsSessionTimeChanged] = useState(false);
 
   let timerID, breakTimerID, flagged= true, timerLabel;
-  let url = "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg";
 
   let playingAudio = () => {
     let audioElem = document.querySelector("#beep");
@@ -50,24 +39,17 @@ function Clock25Plus5() {
       setBreakTime(breakTime > 1 ? breakTime - 1 : 1);
     } else if (clickedItem == "session-increment") {
       setSessionTime(sessionTime < 60 ? sessionTime + 1 : sessionTime);
-      // flagged = false;
-      // console.log(flagged, "!!")
-      setTest(false);
+      setIsSessionTimeChanged(false);
     } else if (clickedItem == "session-decrement") {
       setSessionTime(sessionTime > 1 ? sessionTime - 1 : 1);
-      // flagged = false;
-      // console.log(flagged, "?!")
-      setTest(false);
+      setIsSessionTimeChanged(false);
     } else if (clickedItem == "start_stop") {
       if (timerFlag) {
         setBreakTimerStatus(!breakTimerStatus);
       } else {
         setTimerStatus(!timerStatus);
       }
-      //   toggleButtonsWithDisable();
     } else if (clickedItem == "reset") {
-      // setTimer(25);
-      // setTimer("00:00");
       timerLabel = document.querySelector("#timer-label");
       timerLabel.textContent = "Session Timer";
       setAudioPlaying(false);
@@ -78,25 +60,19 @@ function Clock25Plus5() {
       setTimerStatus(false);
       setBreakTimerStatus(false);
       setTimerFlag(false);
-      toggleButtonsWithDisable();
       stoppingAudio();
     }
   };
 
   useEffect(() => {
-    toggleButtonsWithDisable();
     timerLabel = document.querySelector("#timer-label");
     if (timerStatus) {
       timerID = setInterval(() => {
         tick();
-
         if (timeReamining == 0) {
-          // timerLabel = document.querySelector('#timer-label');
           timerLabel.textContent = "break begins";
           setTimerFlag(true);
-        //   setAudioPlaying(true);
           playingAudio();
-          // setTimer(0);
           setTimer("00:00");
           setTimeRemaining(undefined);
           setTimerStatus(false);
@@ -114,11 +90,9 @@ function Clock25Plus5() {
       breakTimerID = setInterval(() => {
         tick();
         if (timeReamining == 0) {
-          // timerLabel = document.querySelector('#timer-label');
           timerLabel.textContent = "break ends";
           setTimer("00:00");
           playingAudio();
-          // setTimer(sessionTime < 10 ? '0' + sessionTime + ':00' : sessionTime + ':00');
           setBreakTimerStatus(false);
           setAudioPlaying(true);
           setTimerFlag(false);
@@ -143,45 +117,18 @@ function Clock25Plus5() {
     );
   };
 
-  let toggleButtonsWithDisable = () => {
-    // console.log(timerStatus, breakTimerStatus, "what what?!");
-    // if (timerStatus || breakTimerStatus) {
-    //   setBreakIncrement(true);
-    //   setBreakDecrement(true);
-
-    //   setSessionIncrement(true);
-    //   setSessionDecrement(true);
-    // } else {
-    //   setBreakIncrement(false);
-    //   setBreakDecrement(false);
-
-    //   setSessionIncrement(false);
-    //   setSessionDecrement(false);
-    // }
-  };
-
   let timeConversion = () => {
-    // let inSeconds = timeReamining ? timeReamining : sessionTime * 60;
     let inSeconds;
 
     if (breakTimerStatus) {
       inSeconds = timeReamining ? timeReamining : breakTime * 60;
     } else {
-      // if(test) {
-      //   console.log('here', sessionTime)
-      // } else {
-      //   console.log('here else', sessionTime)
-      // }
-      if(!test) {
-        setTest(true);
-        // console.log(flagged, "??")
-        console.log('if')
+      if(!isSessionTimeChanged) {
+        setIsSessionTimeChanged(true);
         inSeconds = sessionTime * 60;
       } else {
-        console.log('else')
         inSeconds = timeReamining ? timeReamining : sessionTime * 60;
       }
-      // inSeconds = timeReamining ? timeReamining : sessionTime * 60;
     }
 
     let secondsToDisplay = inSeconds % 60;
@@ -191,27 +138,16 @@ function Clock25Plus5() {
     let minutesToDisplay = minutesRemaining % 60;
 
     setTimeRemaining(inSeconds - 1);
-    // console.log(inSeconds, timeReamining, '??')
 
     return { secs: secondsToDisplay, mins: minutesToDisplay };
   };
 
   useEffect(() => {
-    timerLabel = document.querySelector("#timer-label");
-    // setSessionTime(25);
     setBreakTime(5);
-    // setTimer("00:00");
     setTimer(
       sessionTime < 10 ? "0" + sessionTime + ":00" : sessionTime + ":00"
     );
   }, [sessionTime]);
-
-  // useEffect(() => {
-  //     // setSessionTime(25);
-  //     setBreakTime(5);
-  //     // setTimer("00:00");
-  //     setTimer(sessionTime < 10 ? '0'+sessionTime+':00' : sessionTime+':00');
-  // }, [])
 
   return (
     <div className="inner-container">
@@ -222,15 +158,8 @@ function Clock25Plus5() {
         timerStatus={timerStatus}
         breakTimerStatus={breakTimerStatus}
         timer={timer}
-        breakIncrement={breakIncrement}
-        breakDecrement={breakDecrement}
-        sessionIncrement={sessionIncrement}
-        sessionDecrement={sessionDecrement}
         isPlaying={audioPlaying}
       />
-      {/* <button onClick={() => startTimer()}>start</button>
-            <button onClick={() => stopTimer()}>stop</button> */}
-      {minutes} : {seconds}
     </div>
   );
 }
